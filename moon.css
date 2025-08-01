@@ -1,0 +1,51 @@
+/* Default Light Mode */
+body {
+    background: #f9f9f9;
+    color: #333;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  .navbar {
+    background: #333;
+    color: #fff;
+  }
+  
+  .hero {
+    background: #fff;
+    color: #333;
+  }
+  
+  /* Night Mode */
+  body.night-mode {
+    background: #1a1a1a;
+    color: #f0f0f0;
+  }
+  
+  body.night-mode .navbar {
+    background: #222;
+    color: #f0f0f0;
+  }
+  
+  body.night-mode .hero {
+    background: #1a1a1a;
+    color: #f0f0f0;
+  }
+  
+  /* Night Mode Toggle */
+  .night-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  
+  .night-mode-toggle i {
+    font-size: 1.5rem;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+  
+  body.night-mode .night-mode-toggle i {
+    color: #f0f0f0;
+  }

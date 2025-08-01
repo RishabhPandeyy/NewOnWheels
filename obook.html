@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Now - OnWheels Mechanic</title>
+  <link rel="stylesheet" href="obook.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Book Now Section -->
+  <section class="book-now">
+    <div class="container">
+      <h2>Book Now</h2>
+      <p class="subtitle">Get schedule our service at your location.</p>
+
+      <!-- Booking Form -->
+      <form class="booking-form">
+        <!-- Name -->
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="form" name="name" placeholder="Enter your full name" required>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="form" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="form" name="phone" placeholder="Enter your phone number" required>
+        </div>
+
+        <!-- Service Type -->
+        <div class="form-group">
+          <label for="service">Service Type</label>
+          <select id="form" name="service" required>
+            <option value="" disabled selected>Select a service</option>
+            <option value="jump-start">Jump-Start</option>
+            <option value="tire-change">Tire Change</option>
+            <option value="battery-replacement">Battery Replacement</option>
+            <option value="diagnostics">Diagnostics</option>
+            <option value="minor-repairs">Minor Repairs</option>
+            <option value="oil-change">Oil Change</option>
+          </select>
+        </div>
+
+        <!-- Date and Time -->
+        <div class="form-group">
+          <label for="datetime">Preferred Date & Time</label>
+          <input type="datetime-local" id="datetime" name="datetime" required>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" id="location" name="location" placeholder="Enter your location" required>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+          <button type="submit" class="submit-button">Book Now</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script src="obook.js"></script>
+  <script>
+  let url='https://script.google.com/macros/s/AKfycbyeAB2EHTLML8-TcxGtumGgYJiml-liv_KBmhCNwAvRX1NVZvlPTQ_tc3BqIB1A5xDPyw/exec';
+  let form=document.querySelector('#form');
+
+form.addEventListener("submit", (e)=> {
+
+let d=new FormData (form);
+
+fetch(url, {
+
+method: "POST",
+
+body:d
+
+}).then((res)=>res.text())
+
+.then((finalRes)=>console.log(finalRes))
+
+e.preventDefault();
+})
+</script>
+</body>
+</html>

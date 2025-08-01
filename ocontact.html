@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - OnWheels Mechanic</title>
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- Premium Variables & General Styling --- */
+    :root {
+        --primary-color: #00A3FF;
+        --primary-glow: rgba(0, 163, 255, 0.3);
+        --dark-navy: #0A192F;
+        --light-navy: #112240;
+        --slate: #8892b0;
+        --light-slate: #a8b2d1;
+        --white: #e6f1ff;
+        --font-family: 'Poppins', sans-serif;
+        --border-radius: 12px;
+        --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+        --section-padding: 6rem 5%;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: var(--font-family);
+        line-height: 1.6;
+        background-color: var(--dark-navy);
+        color: var(--slate);
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    section {
+        padding: var(--section-padding);
+    }
+    
+    /* Add a top padding to the first section to account for the fixed navbar */
+    .contact {
+        padding-top: 10rem;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        color: var(--white);
+    }
+
+    .section-subtitle {
+        text-align: center;
+        font-size: 1.1rem;
+        color: var(--slate);
+        margin-bottom: 4rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* ======================= NAVBAR (Consistent with Index Page) ======================= */
+    .navbar {
+        background: rgba(10, 25, 47, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 0.8rem 5%;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    }
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .navbar-logo {
+        color: var(--white);
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .navbar-menu {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        gap: 2rem;
+    }
+    .navbar-link {
+        color: var(--light-slate);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    .navbar-link:hover {
+        color: var(--primary-color);
+    }
+    .call-now-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        border: 1px solid var(--primary-color);
+        border-radius: var(--border-radius);
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    .call-now-button:hover {
+        background-color: var(--primary-glow);
+        box-shadow: 0 0 15px var(--primary-glow);
+    }
+    .hamburger {
+        display: none;
+        color: var(--white);
+        font-size: 1.8rem;
+        cursor: pointer;
+    }
+
+    /* ======================= CONTACT SECTION ======================= */
+    .contact-form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: var(--light-navy);
+        padding: 3rem;
+        border-radius: var(--border-radius);
+        border: 1px solid #1d2d44;
+    }
+    
+    .contact-form-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .contact-form-container label {
+        color: var(--light-slate);
+        font-weight: 600;
+        margin-bottom: -0.5rem;
+    }
+
+    .contact-form-container input,
+    .contact-form-container select,
+    .contact-form-container textarea {
+        width: 100%;
+        padding: 1rem;
+        background-color: var(--dark-navy);
+        border: 1px solid #1d2d44;
+        border-radius: var(--border-radius);
+        color: var(--white);
+        font-family: var(--font-family);
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .contact-form-container input:focus,
+    .contact-form-container select:focus,
+    .contact-form-container textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    
+    .contact-form-container select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238892b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1em;
+    }
+
+    .contact-form-container button {
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: var(--transition);
+        background-color: var(--primary-color);
+        color: var(--dark-navy);
+        border: 1px solid var(--primary-color);
+        box-shadow: 0 0 20px var(--primary-glow);
+        cursor: pointer;
+    }
+    
+    .contact-form-container button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 30px var(--primary-color);
+    }
+
+    /* ======================= TESTIMONIALS SECTION ======================= */
+    .testimonials {
+        background-color: var(--dark-navy); /* Match background */
+    }
+    .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .testimonial-card {
+        background: var(--light-navy);
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        border-left: 4px solid var(--primary-color);
+    }
+    
+    .testimonial-card p {
+        font-style: italic;
+        margin-bottom: 1rem;
+        color: var(--light-slate);
+    }
+    
+    .testimonial-card span {
+        font-weight: 600;
+        color: var(--white);
+    }
+
+    /* ======================= FOOTER ======================= */
+    footer {
+        background-color: var(--light-navy);
+        text-align: center;
+        padding: 2rem;
+        border-top: 1px solid #1d2d44;
+    }
+    
+    .social-links {
+        margin-top: 1rem;
+    }
+
+    .social-links a {
+        color: var(--slate);
+        font-size: 1.5rem;
+        margin: 0 0.5rem;
+        transition: var(--transition);
+    }
+    
+    .social-links a:hover {
+        color: var(--primary-color);
+    }
+
+    /* ======================= RESPONSIVE DESIGN ======================= */
+    @media (max-width: 768px) {
+        .navbar-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            flex-direction: column;
+            background-color: var(--light-navy);
+            text-align: center;
+            padding: 2rem 0;
+            gap: 1.5rem;
+        }
+
+        .navbar-menu.active {
+            display: flex;
+        }
+
+        .hamburger {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+        }
+
+        .contact-form-container {
+            padding: 2rem;
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================= NAVBAR ======================= -->
+  <nav class="navbar" id="main-navbar">
+      <div class="navbar-container">
+          <a href="premium_index.html" class="navbar-logo">OnWheels Mechanic</a>
+          <div class="hamburger" id="mobile-menu">
+              <i class="fas fa-bars"></i>
+          </div>
+          <ul class="navbar-menu" id="nav-menu">
+              <li class="navbar-item"><a href="oindex.html" class="navbar-link">Home</a></li>
+              <li class="navbar-item"><a href="#" class="navbar-link">About</a></li>
+              <li class="navbar-item"><a href="#" class="navbar-link">Services</a></li>
+              <li class="navbar-item"><a href="premium_contact.html" class="navbar-link">Contact</a></li>
+              <li class="navbar-item">
+                <a href="tel:+919794575236" class="call-now-button">
+                  <i class="fas fa-phone"></i> Call Now 
+                </a>
+              </li>
+          </ul>
+      </div>
+  </nav>
+
+  <!-- ======================= CONTACT SECTION ======================= -->
+  <section class="contact">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="section-subtitle">Have a problem or a question? Fill out the form below and we'll get back to you as soon as possible.</p>
+      
+      <div class="contact-form-container">
+        <form action="#" method="post">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+          
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          
+          <label for="phone">Phone:</label>
+          <input type="tel" id="phone" name="phone" required>
+
+          <label for="problem">Describe Your Problem:</label>
+          <select id="problem" name="problem" required>
+            <option value="" disabled selected>Select a problem...</option>
+            <option value="jump-start">Car won't start (Jump-Start Needed)</option>
+            <option value="flat-tire">Flat Tire</option>
+            <option value="battery-issue">Battery Issue</option>
+            <option value="engine-problem">Engine Problem</option>
+            <option value="brake-issue">Brake Issue</option>
+            <option value="overheating">Car Overheating</option>
+            <option value="other">Other</option>
+          </select>
+
+          <label for="message">Additional Details:</label>
+          <textarea id="message" name="message" rows="5" placeholder="Provide more details about your issue, like your location, car model, etc..."></textarea>
+          
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= TESTIMONIALS SECTION ======================= -->
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="section-title">What Our Customers Say</h2>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <p>"OnWheels Mechanic saved me when my car broke down at midnight. Highly recommended!"</p>
+          <span>- Suresh.</span>
+        </div>
+        <div class="testimonial-card">
+          <p>"Fast and professional service. They came to my location and fixed my flat tire in no time."</p>
+          <span>- Manish.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= FOOTER ======================= -->
+  <footer>
+    <div class="container">
+      <p>© 2025 OnWheels Mechanic. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Mobile Menu Toggle ---
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        mobileMenu.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    });
+  </script>
+</body>
+</html>
