@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Products - OnWheels Mechanic</title>
+
+  <!-- Font Awesome & Google Fonts (Same as index.html) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- Premium Variables & General Styling (Same as index.html) --- */
+    :root {
+        --primary-color: #00A3FF;
+        --primary-glow: rgba(0, 163, 255, 0.3);
+        --dark-navy: #0A192F;
+        --light-navy: #112240;
+        --slate: #8892b0;
+        --light-slate: #a8b2d1;
+        --white: #e6f1ff;
+        --font-family: 'Poppins', sans-serif;
+        --border-radius: 12px;
+        --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: var(--font-family);
+        line-height: 1.6;
+        background-color: var(--dark-navy);
+        color: var(--slate);
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 1rem; font-weight: 700; color: var(--white); }
+    .section-subtitle { text-align: center; font-size: 1.1rem; color: var(--slate); margin-bottom: 4rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+    /* ======================= NAVBAR (Consistent Styling) ======================= */
+    .navbar { background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px); padding: 0.8rem 5%; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+    .navbar-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .navbar-logo { color: var(--white); font-size: 1.8rem; font-weight: 700; text-decoration: none; }
+    .navbar-menu { display: flex; align-items: center; list-style: none; gap: 2rem; }
+    .navbar-link { color: var(--light-slate); text-decoration: none; transition: var(--transition); }
+    .navbar-link:hover { color: var(--primary-color); }
+    .call-now-button { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.2rem; border: 1px solid var(--primary-color); border-radius: var(--border-radius); color: var(--primary-color); text-decoration: none; transition: var(--transition); }
+    .call-now-button:hover { background-color: var(--primary-glow); }
+    .hamburger { display: none; color: var(--white); font-size: 1.8rem; cursor: pointer; }
+
+    /* ======================= GENERIC PAGE HEADER ======================= */
+    .page-header { padding-top: 10rem; padding-bottom: 4rem; text-align: center; background-color: var(--dark-navy); }
+    .page-header h1 { font-size: 3rem; color: var(--white); margin-bottom: 0.5rem; }
+
+    /* ======================= SHOP FILTER BAR ======================= */
+    .filter-bar {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+    .filter-btn {
+        padding: 0.6rem 1.5rem;
+        border: 1px solid #1d2d44;
+        background: transparent;
+        color: var(--slate);
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+    .filter-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--white);
+    }
+    .filter-btn.active {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        color: var(--dark-navy);
+    }
+    
+    /* ======================= SHOP PRODUCT GRID ======================= */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+    .product-card {
+        background: var(--light-navy);
+        border-radius: var(--border-radius);
+        border: 1px solid #1d2d44;
+        overflow: hidden;
+        text-align: left;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .product-card.hide {
+        opacity: 0;
+        transform: scale(0.9);
+        display: none;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .product-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
+    .product-info { padding: 1.5rem; }
+    .product-category { font-size: 0.8rem; color: var(--slate); text-transform: uppercase; }
+    .product-name { font-size: 1.2rem; color: var(--white); margin: 0.25rem 0 0.5rem; }
+    .product-price { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; }
+    .btn-inquire { width: 100%; padding: 0.8rem; font-size: 0.9rem; font-weight: 600; color: var(--primary-color); background: transparent; border: 1px solid var(--primary-color); border-radius: var(--border-radius); cursor: pointer; transition: var(--transition); }
+    .btn-inquire:hover { background-color: var(--primary-glow); }
+
+    /* ======================= FOOTER ======================= */
+    .main-footer { background-color: var(--dark-navy); padding: 4rem 5% 2rem; border-top: 1px solid var(--light-navy); }
+    .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem; text-align: center; }
+    .footer-section h4 { color: var(--white); font-size: 1.2rem; margin-bottom: 1rem; }
+    .footer-section a { color: var(--slate); text-decoration: none; display: block; margin-bottom: 0.5rem; transition: var(--transition); }
+    .footer-section a:hover { color: var(--primary-color); }
+    .trust-badges { display: flex; gap: 1rem; justify-content: center; }
+    .trust-badges img { height: 40px; filter: grayscale(100%) brightness(1.5); }
+    .footer-bottom { text-align: center; border-top: 1px solid #1d2d44; padding-top: 2rem; }
+    .social-links { margin-top: 1rem; }
+    .social-links a { color: var(--slate); font-size: 1.5rem; margin: 0 0.5rem; }
+
+    /* ======================= RESPONSIVE DESIGN ======================= */
+    @media (max-width: 768px) {
+        .navbar-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; flex-direction: column; background-color: var(--light-navy); text-align: center; padding: 2rem 0; gap: 1.5rem; }
+        .navbar-menu.active { display: flex; }
+        .hamburger { display: block; }
+        .page-header h1 { font-size: 2.5rem; }
+        .section-title { font-size: 2.2rem; }
+        @media (min-width: 768px) { .trust-badges { justify-content: flex-start; } .footer-content { text-align: left; } }
+    }
+  </style>
+</head>
+<body>
+
+    <!-- ======================= HEADER / NAVBAR ======================= -->
+    <header class="navbar" id="main-navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">OnWheels Mechanic</a>
+            <div class="hamburger" id="mobile-menu"><i class="fas fa-bars"></i></div>
+            <nav class="navbar-menu" id="nav-menu">
+                <a href="oindex.html" class="navbar-link">Home</a>
+                <a href="index.html#about" class="navbar-link">About</a>
+                <a href="index.html#services" class="navbar-link">Services</a>
+                <a href="shop.html" class="navbar-link">Shop</a>
+                <a href="index.html#blog" class="navbar-link">Blog</a>
+                <a href="index.html#contact" class="navbar-link">Contact</a>
+                <a href="tel:+919794575236" class="call-now-button"><i class="fas fa-phone"></i> Call Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- ======================= PAGE HEADER ======================= -->
+        <section class="page-header">
+            <div class="container">
+                <h1>Shop Essential Products</h1>
+                <p>Quality oils, fluids, and accessories for your vehicle.</p>
+            </div>
+        </section>
+
+        <!-- ======================= SHOP SECTION ======================= -->
+        <section id="shop">
+            <div class="container">
+                <!-- Filter Controls -->
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">All Products</button>
+                    <button class="filter-btn" data-filter="car">Car Essentials</button>
+                    <button class="filter-btn" data-filter="bike">Bike Essentials</button>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="product-grid">
+                    <!-- Product 1 (Car) -->
+                    <div class="product-card" data-category="car">
+                        <img src="https://via.placeholder.com/300x300/112240/FFFFFF?text=Car+Engine+Oil" alt="Car Engine Oil">
+                        <div class="product-info">
+                            <span class="product-category">Car Lubricants</span>
+                            <h3 class="product-name">Synthetic Car Engine Oil (5W-30)</h3>
+                            <div class="product-price">₹1,250</div>
+                            <button class="btn-inquire" data-product="Synthetic Car Engine Oil (5W-30)"><i class="fab fa-whatsapp"></i> Inquire</button>
+                        </div>
+                    </div>
+                    <!-- Product 2 (Bike) -->
+                    <div class="product-card" data-category="bike">
+                        <img src="https://via.placeholder.com/300x300/112240/FFFFFF?text=Bike+Engine+Oil" alt="Bike Engine Oil">
+                        <div class="product-info">
+                            <span class="product-category">Bike Lubricants</span>
+                            <h3 class="product-name">Bike Engine Oil (10W-40)</h3>
+                            <div class="product-price">₹850</div>
+                            <button class="btn-inquire" data-product="Bike Engine Oil (10W-40)"><i class="fab fa-whatsapp"></i> Inquire</button>
+                        </div>
+                    </div>
+                    <!-- Product 3 (Car) -->
+                    <div class="product-card" data-category="car">
+                        <img src="https://via.placeholder.com/300x300/112240/FFFFFF?text=Car+Coolant" alt="Car Coolant">
+                        <div class="product-info">
+                            <span class="product-category">Car Fluids</span>
+                            <h3 class="product-name">Radiator Coolant (1L)</h3>
+                            <div class="product-price">₹450</div>
+                            <button class="btn-inquire" data-product="Radiator Coolant (1L)"><i class="fab fa-whatsapp"></i> Inquire</button>
+                        </div>
+                    </div>
+                    <!-- Product 4 (Bike) -->
+                    <div class="product-card" data-category="bike">
+                        <img src="https://via.placeholder.com/300x300/112240/FFFFFF?text=Chain+Lube" alt="Chain Lube">
+                        <div class="product-info">
+                            <span class="product-category">Bike Maintenance</span>
+                            <h3 class="product-name">Motorcycle Chain Lube Spray</h3>
+                            <div class="product-price">₹300</div>
+                            <button class="btn-inquire" data-product="Motorcycle Chain Lube Spray"><i class="fab fa-whatsapp"></i> Inquire</button>
+                        </div>
+                    </div>
+                    <!-- Product 5 (Car) -->
+                    <div class="product-card" data-category="car">
+                        <img src="https://via.placeholder.com/300x300/112240/FFFFFF?text=Wiper+Blades" alt="Wiper Blades">
+                        <div class="product-info">
+                            <span class="product-category">Car Accessories</span>
+                            <h3 class="product-name">Premium Wiper Blades (Pair)</h3>
+                            <div class="product-price">₹800</div>
+                            <button class="btn-inquire" data-product="Premium Wiper Blades (Pair)"><i class="fab fa-whatsapp"></i> Inquire</button>
+                        </div>
+                    </div>
+                     <!-- Product 6 (Bike) -->
+                    <div class="product-card" data-category="bike">
+                        <img src="https://via.placeholder.com/300x300/112240/FFFFFF?text=Air+Filter" alt="Bike Air Filter">
+                        <div class="product-info">
+                            <span class="product-category">Bike Parts</span>
+                            <h3 class="product-name">Performance Air Filter</h3>
+                            <div class="product-price">₹650</div>
+                            <button class="btn-inquire" data-product="Performance Air Filter"><i class="fab fa-whatsapp"></i> Inquire</button>
+                        </div>
+                    </div>
+                    <!-- Product 7 (Car & Bike) -->
+                    <div class="product-card" data-category="car bike">
+                        <img src="https://via.placeholder.com/300x300/112240/FFFFFF?text=Puncture+Kit" alt="Puncture Repair Kit">
+                        <div class="product-info">
+                            <span class="product-category">Emergency Kits</span>
+                            <h3 class="product-name">Tubeless Puncture Repair Kit</h3>
+                            <div class="product-price">₹350</div>
+                            <button class="btn-inquire" data-product="Tubeless Puncture Repair Kit"><i class="fab fa-whatsapp"></i> Inquire</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================= FOOTER ======================= -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section"><h4>OnWheels Mechanic</h4><p>Your trusted partner for 24/7 mobile auto repair and maintenance in Prayagraj.</p></div>
+                <div class="footer-section"><h4>Quick Links</h4><a href="index.html#about">About Us</a><a href="shop.html">Shop</a><a href="index.html#service-area">Service Area</a><a href="index.html#contact">Contact</a></div>
+                <div class="footer-section"><h4>Our Promise</h4><div class="trust-badges"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=ASE" alt="ASE Certified Badge"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=24/7" alt="24/7 Service Badge"></div></div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 OnWheels Mechanic. All rights reserved.</p>
+                <div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const whatsappNumber = '919794575236'; // Your WhatsApp Number
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        if (mobileMenu && navMenu) {
+            mobileMenu.addEventListener('click', () => { navMenu.classList.toggle('active'); });
+        }
+
+        // --- Product Filter Logic ---
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Set active class on button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filter = button.dataset.filter;
+
+                productCards.forEach(card => {
+                    const categories = card.dataset.category.split(' ');
+                    // Hide card initially with a class for animation
+                    card.style.display = 'none';
+
+                    if (filter === 'all' || categories.includes(filter)) {
+                        // Use a short timeout to allow the display change to register before animation
+                        setTimeout(() => {
+                            card.style.display = 'block';
+                        }, 10);
+                    }
+                });
+            });
+        });
+
+        // --- Product Inquiry to WhatsApp ---
+        const inquireButtons = document.querySelectorAll('.btn-inquire');
+        inquireButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const productName = button.dataset.product;
+                const message = `Hello, I'm interested in buying the following product from your website:\n\n*Product:* ${productName}\n\nPlease let me know about its availability and price. Thank you.`;
+                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            });
+        });
+    });
+    </script>
+</body>
+</html>
