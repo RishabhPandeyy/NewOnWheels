@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Ride with Map Search | OnWheels Prayagraj</title>
+  <meta name="description" content="Search for your pickup and destination on an interactive map to get an instant fare estimate. The easiest way to book a Bike, Auto, or Car in Prayagraj.">
+  <meta name="keywords" content="map search booking, leaflet search, prayagraj cab booking, onwheels ride cost, fare estimator">
+  <meta name="author" content="OnWheels Mechanic">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+        --primary-color: #00A3FF;
+        --primary-glow: rgba(0, 163, 255, 0.3);
+        --dark-navy: #0A192F;
+        --light-navy: #112240;
+        --slate: #8892b0;
+        --light-slate: #a8b2d1;
+        --white: #e6f1ff;
+        --success-color: #28a745;
+        --font-family: 'Poppins', sans-serif;
+        --border-radius: 12px;
+        --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: var(--font-family);
+        line-height: 1.6;
+        background-color: var(--dark-navy);
+        color: var(--slate);
+        background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+    body.modal-open { overflow: hidden; }
+
+    /* Page, Navbar, Form Layout */
+    .page-wrapper { min-height: 100vh; display: flex; flex-direction: column; }
+    .content-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 8rem 0 4rem; background-color: rgba(10, 25, 47, 0.85); backdrop-filter: blur(8px); }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 2rem; width: 100%; }
+    .navbar { background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px); padding: 0.8rem 5%; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+    .navbar-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .navbar-logo { color: var(--white); font-size: 1.8rem; font-weight: 700; text-decoration: none; }
+    .navbar-menu { display: flex; align-items: center; list-style: none; gap: 2rem; }
+    .navbar-link { color: var(--light-slate); text-decoration: none; transition: var(--transition); }
+    .navbar-link:hover { color: var(--primary-color); }
+    
+    .booking-form-wrapper { background: var(--light-navy); padding: 2.5rem; border-radius: var(--border-radius); border: 1px solid #1d2d44; }
+    .booking-form-wrapper h1 { font-size: 2.5rem; color: var(--white); margin-bottom: 0.5rem; text-align: center; }
+    .booking-form-wrapper .form-subtitle { margin-bottom: 2rem; text-align: center; color: var(--light-slate); }
+    .booking-form { display: flex; flex-direction: column; gap: 1.5rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .full-width { grid-column: 1 / -1; }
+    .form-group label { color: var(--light-slate); font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+    .form-group input, .form-group textarea { width: 100%; padding: 1rem; background-color: var(--dark-navy); border: 1px solid #1d2d44; border-radius: var(--border-radius); color: var(--white); font-family: var(--font-family); font-size: 1rem; }
+    .map-select-btn { font-size: 0.8rem; padding: 4px 8px; background-color: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); border-radius: 6px; cursor: pointer; }
+    .location-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 0.8rem; font-size: 0.9rem; color: var(--slate); background-color: var(--dark-navy); border: 1px solid #1d2d44; border-radius: var(--border-radius); cursor: pointer; margin-top: 0.5rem; }
+    .btn { padding: 1rem; font-weight: 600; font-size: 1rem; border-radius: var(--border-radius); cursor: pointer; transition: var(--transition); border: 2px solid transparent; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    .btn-primary { background-color: var(--primary-color); color: var(--dark-navy); border-color: var(--primary-color); }
+    .btn-primary:disabled { background-color: var(--slate); border-color: var(--slate); cursor: not-allowed; }
+    
+    #fare-details { display: none; background-color: transparent; padding-top: 1rem; text-align: center; }
+    #fare-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+    #fare-list li { background: var(--dark-navy); padding: 0.75rem 1rem; border-radius: var(--border-radius); border: 2px solid #1d2d44; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); cursor: pointer; }
+    #fare-list li.selected { border-color: var(--success-color); box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); }
+    #fare-list .vehicle-name { font-weight: 600; color: var(--white); }
+    #fare-list .vehicle-name i { margin-right: 0.75rem; color: var(--primary-color); }
+    #fare-list .vehicle-price { font-size: 1.2rem; font-weight: 700; color: var(--success-color); }
+
+    /* Map Modal & Search Styles */
+    .map-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: none; align-items: center; justify-content: center; background-color: rgba(10, 25, 47, 0.9); backdrop-filter: blur(5px); }
+    .map-container { position: relative; width: 90%; height: 90%; display: flex; flex-direction: column; background: #fff; border-radius: var(--border-radius); overflow: hidden; }
+    #map { flex-grow: 1; background-color: var(--slate); }
+    .map-header { padding: 1rem; background-color: var(--dark-navy); text-align: center; }
+    .map-search-container { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .map-search-input { flex-grow: 1; padding: 0.75rem; background-color: #07111f; border: 1px solid #1d2d44; border-radius: var(--border-radius); color: var(--white); font-size: 1rem; }
+    .map-search-btn { padding: 0 1rem; background-color: var(--primary-color); color: var(--dark-navy); border: none; border-radius: var(--border-radius); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .map-search-btn:disabled { background-color: var(--slate); }
+    #map-address-preview { font-size: 0.8rem; color: var(--light-slate); min-height: 1.2em; }
+    .map-footer { padding: 1rem; background-color: var(--dark-navy); text-align: center; }
+    .close-map-btn { position: absolute; top: 10px; right: 10px; z-index: 1001; background: rgba(0,0,0,0.5); color: #fff; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; }
+    
+    .main-footer { background-color: var(--dark-navy); padding: 3rem 5%; border-top: 1px solid var(--light-navy); color: var(--light-slate); text-align: center; }
+    
+    @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="navbar">
+            <div class="navbar-container">
+                <a href="#" class="navbar-logo">OnWheels</a>
+                <nav class="navbar-menu">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="about.html" class="navbar-link">About</a>
+                <a href="#services" class="navbar-link">Services</a>
+                <a href="book.html" class="navbar-link">Book a Ride </a>
+                <a href="shop.html" class="navbar-link">Shop</a>
+                <a href="mechanic.html" class="navbar-link">Book a Mechanic</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="content-wrap">
+            <div class="container">
+                <div class="booking-form-wrapper">
+                    <h1>Book a Ride</h1>
+                    <p class="form-subtitle">Enter your trip details to see the estimated fare.</p>
+                    <form class="booking-form" id="booking-form">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="name-input">Your Name</label><input id="name-input" type="text" placeholder="e.g., Suresh Kumar" required></div>
+                            <div class="form-group"><label for="phone-input">Your Phone</label><input id="phone-input" type="tel" placeholder="e.g., 9876543210" required></div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="pickup-location-input">Pickup Location <button type="button" id="select-pickup-map-btn" class="map-select-btn"><i class="fas fa-map-marked-alt"></i> Select on Map</button></label>
+                            <textarea id="pickup-location-input" rows="2" placeholder="Start typing or select on map..." required></textarea>
+                            <button type="button" id="getPickupLocationBtn" class="location-btn"><i class="fas fa-crosshairs"></i> Use My Current Geolocation</button>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="dropoff-location-input">Destination <button type="button" id="select-dropoff-map-btn" class="map-select-btn"><i class="fas fa-map-marked-alt"></i> Select on Map</button></label>
+                            <textarea id="dropoff-location-input" rows="2" placeholder="Enter destination or select on map" required></textarea>
+                        </div>
+                        <div id="fare-details">
+                            <ul id="fare-list"></ul>
+                        </div>
+                        <div class="form-actions full-width">
+                            <button type="submit" id="submit-booking-btn" class="btn btn-primary" disabled>Get Ride Estimate</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <p>&copy; 2025 OnWheels. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Map Modal -->
+    <div class="map-modal" id="map-modal">
+        <div class="map-container">
+            <button class="close-map-btn" id="close-map-btn">&times;</button>
+            <div class="map-header">
+                <div class="map-search-container">
+                    <input type="search" id="map-search-input" class="map-search-input" placeholder="Search for a location...">
+                    <button id="map-search-btn" class="map-search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <span id="map-address-preview">Drag the pin or search to set a location.</span>
+            </div>
+            <div id="map"></div>
+            <div class="map-footer">
+                <button id="confirm-location-btn" class="btn btn-primary">Confirm Location</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- State & Config ---
+        const PRICING_MODELS = {
+            bike: { name: 'Bike', baseFare: 25, perKmLow: 7, perKmHigh: 9, icon: 'fa-motorcycle' },
+            auto: { name: 'Auto', baseFare: 40, perKmLow: 11, perKmHigh: 14, icon: 'fa-car-side' },
+            car: { name: 'Car', baseFare: 60, perKmLow: 16, perKmHigh: 20, icon: 'fa-car' }
+        };
+        const prayagrajCoords = [25.4358, 81.8463];
+        let map, marker, finalFares = null, selectedVehicle = 'bike', currentTargetInput = null, selectedMapAddress = '';
+
+        // --- UI Elements ---
+        const pickupInput = document.getElementById('pickup-location-input');
+        const dropoffInput = document.getElementById('dropoff-location-input');
+        const submitBtn = document.getElementById('submit-booking-btn');
+        const formInputs = [document.getElementById('name-input'), document.getElementById('phone-input'), pickupInput, dropoffInput];
+        const fareDetailsDiv = document.getElementById('fare-details');
+        const fareListUl = document.getElementById('fare-list');
+        const mapModal = document.getElementById('map-modal');
+        const mapSearchInput = document.getElementById('map-search-input');
+        const mapSearchBtn = document.getElementById('map-search-btn');
+
+        // --- Event Listeners ---
+        formInputs.forEach(el => el.addEventListener('input', resetFareAndButton));
+        document.getElementById('getPickupLocationBtn').addEventListener('click', handleGetGeolocation);
+        document.getElementById('booking-form').addEventListener('submit', handleFormSubmit);
+        document.getElementById('select-pickup-map-btn').addEventListener('click', () => openMap(pickupInput));
+        document.getElementById('select-dropoff-map-btn').addEventListener('click', () => openMap(dropoffInput));
+        document.getElementById('close-map-btn').addEventListener('click', closeMap);
+        document.getElementById('confirm-location-btn').addEventListener('click', handleConfirmLocation);
+        mapSearchBtn.addEventListener('click', searchLocationOnMap);
+        mapSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchLocationOnMap();
+            }
+        });
+        
+        // --- Map Logic ---
+        function initMapIfNeeded() {
+            if (map) return;
+            map = L.map('map').setView(prayagrajCoords, 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            marker = L.marker(prayagrajCoords, { draggable: true }).addTo(map);
+            marker.on('dragend', (event) => reverseGeocode(event.target.getLatLng()));
+        }
+        function openMap(targetInput) {
+            initMapIfNeeded();
+            currentTargetInput = targetInput;
+            mapModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            setTimeout(() => map.invalidateSize(), 100);
+            mapSearchInput.value = ''; // Clear previous search
+            document.getElementById('map-address-preview').textContent = 'Drag the pin or search to set a location.';
+        }
+        function closeMap() {
+            mapModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+        function handleConfirmLocation() {
+            if (selectedMapAddress && currentTargetInput) {
+                currentTargetInput.value = selectedMapAddress;
+                currentTargetInput.dispatchEvent(new Event('input'));
+            }
+            closeMap();
+        }
+        async function searchLocationOnMap() {
+            const query = mapSearchInput.value;
+            if (query.length < 3) return;
+
+            mapSearchBtn.disabled = true;
+            mapSearchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&countrycodes=in&viewbox=81.0,25.0,82.5,26.0&bounded=1`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    const result = data[0];
+                    const latLng = [parseFloat(result.lat), parseFloat(result.lon)];
+                    map.setView(latLng, 16);
+                    marker.setLatLng(latLng);
+                    selectedMapAddress = result.display_name;
+                    document.getElementById('map-address-preview').textContent = selectedMapAddress;
+                } else {
+                    alert('Location not found. Please try a different search term.');
+                }
+            } catch (error) {
+                alert('An error occurred during search.');
+            } finally {
+                mapSearchBtn.disabled = false;
+                mapSearchBtn.innerHTML = '<i class="fas fa-search"></i>';
+            }
+        }
+        async function reverseGeocode(latlng) {
+            const preview = document.getElementById('map-address-preview');
+            preview.textContent = 'Fetching address...';
+            const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latlng.lat}&lon=${latlng.lng}`;
+            try {
+                const data = await (await fetch(url)).json();
+                selectedMapAddress = data.display_name || `Lat: ${latlng.lat.toFixed(4)}, Lon: ${latlng.lng.toFixed(4)}`;
+                preview.textContent = selectedMapAddress;
+            } catch { preview.textContent = 'Error fetching address.'; }
+        }
+
+        // --- Core Application Logic ---
+        function resetFareAndButton() {
+            submitBtn.disabled = !formInputs.every(input => input.value.trim() !== '');
+            fareDetailsDiv.style.display = 'none';
+            submitBtn.innerHTML = 'Get Ride Estimate';
+            finalFares = null;
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            if (finalFares) {
+                saveBookingToServer();
+                return;
+            }
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-calculator"></i> Calculating...';
+            try {
+                const pickupCoords = await getCoords(pickupInput.value);
+                const dropoffCoords = await getCoords(dropoffInput.value);
+                const distance = calculateDistance(pickupCoords, dropoffCoords);
+                finalFares = calculateAllFares(distance);
+                displayFares();
+                updateBookingButton();
+            } catch (error) {
+                alert(`Error: ${error.message}. Please check addresses.`);
+                resetFareAndButton();
+            } finally {
+                submitBtn.disabled = false;
+            }
+        }
+
+        function displayFares() {
+            fareListUl.innerHTML = '';
+            const sortedVehicles = Object.keys(PRICING_MODELS).sort((a, b) => finalFares[a].low - finalFares[b].low);
+            
+            sortedVehicles.forEach(vehicle => {
+                const model = PRICING_MODELS[vehicle];
+                const fare = finalFares[vehicle];
+                const li = document.createElement('li');
+                li.dataset.vehicle = vehicle;
+                li.innerHTML = `<span class="vehicle-name"><i class="fas ${model.icon}"></i> ${model.name}</span> <span class="vehicle-price">₹${fare.low} - ₹${fare.high}</span>`;
+                if (vehicle === selectedVehicle) li.classList.add('selected');
+                
+                li.addEventListener('click', () => {
+                    selectedVehicle = vehicle;
+                    document.querySelectorAll('#fare-list li').forEach(item => item.classList.remove('selected'));
+                    li.classList.add('selected');
+                    updateBookingButton();
+                });
+                fareListUl.appendChild(li);
+            });
+            fareDetailsDiv.style.display = 'block';
+        }
+
+        function updateBookingButton() {
+            if (!finalFares) return;
+            const fare = finalFares[selectedVehicle];
+            const model = PRICING_MODELS[selectedVehicle];
+            submitBtn.innerHTML = `Book Now (${model.name}) for ₹${fare.low} - ₹${fare.high}`;
+        }
+
+        async function saveBookingToServer() {
+            const bookingData = {
+                name: document.getElementById('name-input').value,
+                phone: document.getElementById('phone-input').value,
+                pickupAddress: pickupInput.value,
+                dropoffAddress: dropoffInput.value,
+                selectedVehicle: PRICING_MODELS[selectedVehicle].name,
+                estimatedFare: `₹${finalFares[selectedVehicle].low} - ₹${finalFares[selectedVehicle].high}`,
+                bookingStatus: 'Pending'
+            };
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirming...';
+            try {
+                const response = await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData),
+                });
+                if (!response.ok) throw new Error('Server responded with an error.');
+                const result = await response.json();
+                alert(`Booking Confirmed! Your booking ID is ${result.bookingId}.`);
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Ride Booked!';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was a problem confirming your booking. Please try again.');
+                submitBtn.disabled = false;
+                updateBookingButton();
+            }
+        }
+        
+        async function getCoords(address) {
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&countrycodes=in`;
+            const data = await (await fetch(url)).json();
+            if (data && data.length > 0) return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+            throw new Error(`Could not find coordinates for "${address}"`);
+        }
+
+        function calculateDistance(c1, c2) {
+            if (!c1 || !c2) throw new Error("Invalid coordinates for distance calculation.");
+            const R = 6371;
+            const dLat = (c2.lat - c1.lat) * Math.PI / 180, dLon = (c2.lon - c1.lon) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(c1.lat * Math.PI / 180) * Math.cos(c2.lat * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+        function calculateAllFares(distance) {
+            const fares = {};
+            const baseDistance = 2;
+            for (const vehicle in PRICING_MODELS) {
+                const model = PRICING_MODELS[vehicle];
+                let lowFare = model.baseFare, highFare = model.baseFare;
+                if (distance > baseDistance) {
+                    const extraDistance = distance - baseDistance;
+                    lowFare += extraDistance * model.perKmLow;
+                    highFare += extraDistance * model.perKmHigh;
+                }
+                fares[vehicle] = { low: Math.round(lowFare), high: Math.round(highFare) };
+            }
+            return fares;
+        }
+        async function handleGetGeolocation() {
+            const geoBtn = document.getElementById('getPickupLocationBtn');
+            if (!navigator.geolocation) return alert('Geolocation is not supported.');
+            geoBtn.disabled = true;
+            geoBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fetching...';
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position.coords.latitude}&lon=${position.coords.longitude}`;
+                try {
+                    const data = await (await fetch(url)).json();
+                    if (data && data.display_name) {
+                        pickupInput.value = data.display_name;
+                        pickupInput.dispatchEvent(new Event('input'));
+                    }
+                } finally {
+                    geoBtn.disabled = false;
+                    geoBtn.innerHTML = '<i class="fas fa-crosshairs"></i> Use My Current Geolocation';
+                }
+            }, () => {
+                alert('Unable to retrieve location.');
+                geoBtn.disabled = false;
+                geoBtn.innerHTML = '<i class="fas fa-crosshairs"></i> Use My Current Geolocation';
+            });
+        }
+    });
+    </script>
+</body>
+</html>

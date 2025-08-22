@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="google-site-verification" content="ggcXfunvQWJ3l2fO1ShG5x9ZbMuGBirULzAXD7geW_c" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -147,6 +146,13 @@
     }
     .marquee-content img:hover { filter: none; transform: scale(1.1); }
 
+    /* ======================= HOW IT WORKS SECTION ======================= */
+    .how-it-works-steps { position: relative; }
+    .step { display: flex; align-items: center; gap: 3rem; margin-bottom: 4rem; }
+    .step:nth-child(even) { flex-direction: row-reverse; }
+    .step-number { font-size: 5rem; font-weight: 800; color: var(--light-navy); }
+    .step-content h3 { font-size: 2rem; color: var(--white); margin-bottom: 0.5rem; }
+
     /* ======================= SERVICES, AREA, BLOG, CONTACT, FAQ, FOOTER ======================= */
     .service-grid, .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
     .service-card { background: var(--light-navy); padding: 2.5rem 2rem; border-radius: var(--border-radius); text-align: center; border: 1px solid #1d2d44; transition: var(--transition); text-decoration: none; color: var(--slate); }
@@ -237,16 +243,16 @@
     <!-- ======================= HEADER / NAVBAR ======================= -->
     <header class="navbar" id="main-navbar">
         <div class="navbar-container">
-            <a href="#hero" class="navbar-logo">OnWheels Mechanic</a>
+            <a href="#hero" class="navbar-logo">OnWheels</a>
             <div class="hamburger" id="mobile-menu"><i class="fas fa-bars"></i></div>
             <nav class="navbar-menu" id="nav-menu">
                 <a href="#hero" class="navbar-link">Home</a>
-                <a href="#about" class="navbar-link">About</a>
-                <a href="#services" class="navbar-link">Services</a>
-                <a href="#blog" class="navbar-link">Blog</a>
+                <a href="about.html" class="navbar-link">About</a>
+                <a href="service.html" class="navbar-link">Services</a>
+                <!-- <a href="book.html" class="navbar-link">Book a Ride </a> -->
                 <a href="shop.html" class="navbar-link">Shop</a>
-                <a href="#contact" class="navbar-link">Contact</a>
-                <a href="tel:+919794575236" class="call-now-button"><i class="fas fa-phone"></i> Call Now</a>
+                <a href="mechanic.html" class="navbar-link">Book a Mechanic</a>
+                <a href="tel:+919794575236" class="call-now-button"><i class="fas fa-phone"></i>Book Via Call</a>
             </nav>
         </div>
     </header>
@@ -257,7 +263,7 @@
         <div class="container">
             <h1>24/7 Premium Mobile Mechanic</h1>
             <p>Fast, reliable, and convenient car & bike repair delivered to your location. Your trusted partner on the road.</p>
-            <a href="#contact" class="cta-button">Book an Emergency Service</a>
+            <a href="mechanic.html" class="cta-button">Book an Emergency Service</a>
         </div>
     </section>
 
@@ -271,8 +277,7 @@
                 <div class="reason"><i class="fas fa-dollar-sign"></i><h3>Transparent Pricing</h3><p>No hidden fees. We provide clear, upfront quotes before any work begins.</p></div>
             </div>
         </div>
-    </section>
-
+        </section>
     <!-- ======================= BRANDS WE SERVE SECTION ======================= -->
     <section id="brands" class="brands dark-section">
         <div class="container">
@@ -281,19 +286,39 @@
         </div>
         <div class="marquee"><div class="marquee-content"><img src="hero.png" alt="Hero"><img src="Honda.svg" alt="Honda"><img src="TVS_Motor_Company-Logo.wine.png" alt="TVS"><img src="Royal-Enfield-Logo.png" alt="Royal Enfield"><img src="Bajaj-Auto-Logo.png" alt="Bajaj"><img src="Tata_logo.svg.png" alt="Tata"><img src="Maruti-Suzuki-Logo-2011.png" alt="Maruti Suzuki"><img src="Mahindra-Logo-2012-1.png" alt="Mahindra"><img src="Toyota_logo_(Red).svg" alt="Toyota"><img src="KIA_logo3.svg.png" alt="KIA"></div></div>
     </section>
-
-    <!-- ======================= ABOUT / MEET THE TEAM SECTION ======================= -->
-    <section id="about" class="team">
-        <div class="container">
-            <h2 class="section-title">Meet Our Expert Mechanics</h2>
-            <p class="section-subtitle">We're not just mechanics; we're car enthusiasts dedicated to providing the best service.</p>
-            <div class="team-grid">
-                <div class="team-card"><div class="team-card-image"><img src="https://via.placeholder.com/350x350/112240/FFFFFF?text=Ramesh" alt="Ramesh Kumar"></div><div class="team-card-content"><h3>Ramesh Kumar</h3><span>Lead Mechanic / Founder</span><p>With over 15 years of experience, Ramesh is an ASE Certified Master Technician who loves solving complex engine problems.</p></div></div>
-                <div class="team-card"><div class="team-card-image"><img src="https://via.placeholder.com/350x350/112240/FFFFFF?text=Sunita" alt="Sunita Sharma"></div><div class="team-card-content"><h3>Sunita Sharma</h3><span>Tire & Brake Specialist</span><p>Sunita is our go-to expert for all things wheels, brakes, and suspension, ensuring your car is safe on the road.</p></div></div>
-                <div class="team-card"><div class="team-card-image"><img src="https://via.placeholder.com/350x350/112240/FFFFFF?text=Vikram" alt="Vikram Singh"></div><div class="team-card-content"><h3>Vikram Singh</h3><span>Electrical & Diagnostics</span><p>Vikram specializes in modern vehicle electronics and can diagnose even the most confusing warning lights.</p></div></div>
+    <br>
+     <!-- ======================= HOW IT WORKS SECTION ======================= -->
+        <section class="how-it-works section-padding">
+            <div class="container">
+                <div class="animated-item" style="text-align: center; max-width: 700px; margin: 0 auto 4rem;">
+                    <h2 class="section-title" style="font-size: 3rem;">A Simple, 3-Step Process</h2>
+                    <p>We've streamlined our process to be as simple and hassle-free as possible.</p>
+                </div>
+                <div class="how-it-works-steps">
+                    <div class="step animated-item">
+                        <div class="step-number">01</div>
+                        <div class="step-content">
+                            <h3>You Book Online or Call</h3>
+                            <p>Use our simple online forms or call us directly. Tell us what you need and where you are.</p>
+                        </div>
+                    </div>
+                    <div class="step animated-item">
+                        <div class="step-number">02</div>
+                        <div class="step-content">
+                            <h3>We Arrive at Your Location</h3>
+                            <p>A certified mechanic or a professional driver is dispatched immediately to your specified location.</p>
+                        </div>
+                    </div>
+                    <div class="step animated-item">
+                        <div class="step-number">03</div>
+                        <div class="step-content">
+                            <h3>Problem Solved, Destination Reached</h3>
+                            <p>We fix your vehicle on-site or get you to your destination safely. You pay only when the job is done.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
     <!-- ======================= ALL SERVICES SECTION ======================= -->
     <section id="services" class="dark-section">
@@ -301,7 +326,7 @@
             <h2 class="section-title">Our Mobile Mechanic Services</h2>
             <p class="section-subtitle">A comprehensive range of repair and maintenance services delivered to you.</p>
              <div class="service-grid">
-                <div class="service-card"><i class="fas fa-car-burst"></i><h3>Tire Services</h3><p>Flat tire changes, repairs, and rotation.</p></div>
+                <div class="service-card"><i class="fas fa-wheels"></i><h3>Tire Services</h3><p>Flat tire changes, repairs, and rotation.</p></div>
                 <div class="service-card"><i class="fas fa-battery-full"></i><h3>Battery Services</h3><p>Testing, jump-starts, and replacement.</p></div>
                 <div class="service-card"><i class="fas fa-oil-can"></i><h3>Oil Changes</h3><p>Mobile oil and filter changes.</p></div>
                 <div class="service-card"><i class="fas fa-cogs"></i><h3>Brake Repairs</h3><p>Brake pad and rotor replacement.</p></div>
@@ -309,6 +334,7 @@
                 <div class="service-card"><i class="fas fa-bolt"></i><h3>Electrical Repairs</h3><p>Diagnosing shorts, fuses, and wiring issues.</p></div>
                 <div class="service-card"><i class="fas fa-gas-pump"></i><h3>Emergency Fuel Delivery</h3><p>Ran out of gas? We'll deliver to you.</p></div>
                 <div class="service-card"><i class="fas fa-key"></i><h3>Lockout Services</h3><p>Safely unlock your vehicle without damage.</p></div>
+                <div class="service-card"><i class="fas fa-brush"></i><h3>Foam Cleaning</h3><p>Safely unlock your vehicle without damage.</p></div>
             </div>
         </div>
     </section>
@@ -337,64 +363,10 @@
         </div>
     </section>
 
-    <!-- ======================= CONTACT SECTION ======================= -->
-    <section id="contact" class="dark-section">
-        <div class="container">
-          <h2 class="section-title">Get In Touch</h2>
-          <p class="section-subtitle">For emergencies, call us. For quotes or questions, fill out the form to send us a WhatsApp message.</p>
-          <div class="contact-form-container">
-            <form id="contact-form">
-              <label for="name">Your Name:</label>
-              <input type="text" id="name" name="name" required>
-              
-              <label for="phone">Your Phone:</label>
-              <input type="tel" id="phone" name="phone" required>
-              
-              <label for="vehicle-type">Vehicle Type:</label>
-              <select id="vehicle-type" name="vehicle-type" required>
-                <option value="" disabled selected>Select Vehicle Type...</option>
-                <option value="Car">Car</option>
-                <option value="Bike">Bike</option>
-              </select>
-
-              <div class="vehicle-specifics-container" id="vehicle-specifics">
-                <div class="form-grid-item">
-                    <label for="vehicle-brand">Brand:</label>
-                    <select id="vehicle-brand" name="vehicle-brand" required>
-                        <option value="" disabled selected>Select Brand...</option>
-                    </select>
-                </div>
-                <div class="form-grid-item">
-                    <label for="vehicle-model">Model:</label>
-                    <input type="text" id="vehicle-model" name="vehicle-model" placeholder="e.g., Swift, Activa 6G" required>
-                </div>
-              </div>
-
-              <label for="problem">Service Needed:</label>
-              <select id="problem" name="problem" required>
-                <option value="" disabled selected>Select a service...</option>
-                <option value="Jump-Start / Battery Issue">Jump-Start / Battery Issue</option>
-                <option value="Flat Tire">Flat Tire</option>
-                <option value="Engine Problem">Engine Problem</option>
-                <option value="Brake Issue">Brake Issue</option>
-                <option value="Lockout Service">Lockout Service</option>
-                <option value="Quote Request">Quote Request</option>
-                <option value="Other">Other</option>
-              </select>
-
-              <label for="message">Additional Details:</label>
-              <button type="button" id="getLocationBtn" class="location-btn">
-                  <i class="fas fa-map-marker-alt"></i> Use My Current Location
-              </button>
-              <textarea id="message" name="message" rows="4" placeholder="Describe the issue, your location, etc..."></textarea>
-              
-              <button type="submit" class="cta-button"><i class="fab fa-whatsapp"></i> Send Request via WhatsApp</button>
-            </form>
-          </div>
-        </div>
-    </section>
-  
     <!-- ======================= FAQ SECTION ======================= -->
+
+    <!-- ======================= CONTACT SECTION ======================= -->
+
     <section class="faq">
         <div class="container">
             <h2 class="section-title">Frequently Asked Questions</h2>
@@ -411,7 +383,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section"><h4>OnWheels Mechanic</h4><p>Your trusted partner for 24/7 mobile auto repair and maintenance in Prayagraj.</p></div>
-                <div class="footer-section"><h4>Quick Links</h4><a href="#about">About Us</a><a href="#services">Services</a><a href="#service-area">Service Area</a><a href="#contact">Contact</a></div>
+                <div class="footer-section"><h4>Quick Links</h4><a href="about.html">About Us</a><a href="service.html">Services</a><a href="service.html">Service Area</a><a href="contact.html">Contact</a></div>
                 <div class="footer-section"><h4>Our Promise</h4><div class="trust-badges"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=ASE" alt="ASE Certified Badge"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=24/7" alt="24/7 Service Badge"></div></div>
             </div>
             <div class="footer-bottom">

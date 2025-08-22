@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================================================== -->
+  <!-- ============== PRIMARY SEO META TAGS ============== -->
+  <!-- ================================================== -->
+  <title>Contact Us - OnWheels 24/7 Mobile Mechanic & Ride Service</title>
+  <meta name="description" content="Get in touch with OnWheels in Prayagraj. Call us for immediate assistance, send an email, or use our contact form for inquiries. We're here to help 24/7.">
+  <meta name="keywords" content="contact onwheels, prayagraj mechanic contact, mobile mechanic phone number, onwheels support">
+  <meta name="author" content="OnWheels">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.onwheelsmechanic.com/contact.html"> <!-- !! REPLACE with your actual URL !! -->
+  
+  <!-- Social Media, Fonts, and Icons (Same as other pages) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Re-using the exact same CSS theme -->
+  <style>
+    /* --- Premium Variables & General Styling --- */
+    :root {
+        --primary-color: #00A3FF;
+        --primary-glow: rgba(0, 163, 255, 0.3);
+        --dark-navy: #0A192F;
+        --light-navy: #112240;
+        --slate: #8892b0;
+        --light-slate: #a8b2d1;
+        --white: #e6f1ff;
+        --font-family: 'Poppins', sans-serif;
+        --border-radius: 12px;
+        --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+        --section-padding: 6rem 5%;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: var(--font-family);
+        line-height: 1.6;
+        background-color: var(--dark-navy);
+        color: var(--slate);
+        overflow-x: hidden;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: var(--section-padding); }
+    .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 1rem; font-weight: 700; color: var(--white); }
+    .section-subtitle { text-align: center; font-size: 1.1rem; color: var(--slate); margin-bottom: 4rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+    /* ======================= NAVBAR ======================= */
+    .navbar { background: transparent; padding: 1.5rem 5%; position: fixed; width: 100%; top: 0; z-index: 1000; transition: all 0.3s ease-in-out; }
+    .navbar.scrolled { background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px); padding: 0.8rem 5%; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+    .navbar-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .navbar-logo { color: var(--white); font-size: 1.8rem; font-weight: 700; text-decoration: none; }
+    .navbar-menu { display: flex; align-items: center; list-style: none; gap: 2rem; }
+    .navbar-link { color: var(--light-slate); text-decoration: none; transition: var(--transition); }
+    .navbar-link:hover, .navbar-link.active { color: var(--primary-color); }
+    .call-now-button { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.2rem; border: 1px solid var(--primary-color); border-radius: var(--border-radius); color: var(--primary-color); text-decoration: none; transition: var(--transition); }
+    .call-now-button:hover { background-color: var(--primary-glow); box-shadow: 0 0 15px var(--primary-glow); }
+    .hamburger { display: none; color: var(--white); font-size: 1.8rem; cursor: pointer; }
+    
+    /* ======================= PAGE HEADER ======================= */
+    .page-header {
+        padding-top: 12rem;
+        padding-bottom: 4rem;
+        background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 1)), url('service.jpg') no-repeat center center/cover;
+        text-align: center;
+    }
+    .page-header h1 { font-size: 3.5rem; color: var(--white); margin-bottom: 0.5rem; }
+    .page-header p { font-size: 1.2rem; color: var(--light-slate); }
+    
+    /* ======================= CONTACT LAYOUT ======================= */
+    .contact-layout {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 4rem;
+        align-items: flex-start;
+    }
+
+    /* ======================= CONTACT INFO SIDE ======================= */
+    .contact-info h3 {
+        font-size: 1.8rem;
+        color: var(--white);
+        margin-bottom: 2rem;
+    }
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .info-item i {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-top: 5px;
+    }
+    .info-item h4 {
+        color: var(--white);
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+    }
+    .info-item p, .info-item a {
+        color: var(--slate);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    .info-item a:hover {
+        color: var(--primary-color);
+    }
+    .map-container iframe {
+        border-radius: var(--border-radius);
+        border: 1px solid #1d2d44;
+        width: 100%;
+        height: 250px;
+    }
+
+    /* ======================= CONTACT FORM SIDE ======================= */
+    .contact-form-container {
+        background-color: var(--light-navy);
+        padding: 3rem;
+        border-radius: var(--border-radius);
+        border: 1px solid #1d2d44;
+    }
+    .contact-form-container h3 {
+        font-size: 1.8rem;
+        color: var(--white);
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    .contact-form-container form { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-form-container label { color: var(--light-slate); font-weight: 600; margin-bottom: -0.5rem; }
+    .contact-form-container input, .contact-form-container select, .contact-form-container textarea { width: 100%; padding: 1rem; background-color: var(--dark-navy); border: 1px solid #1d2d44; border-radius: var(--border-radius); color: var(--white); font-family: var(--font-family); font-size: 1rem; transition: var(--transition); }
+    .contact-form-container input:focus, .contact-form-container select:focus, .contact-form-container textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .cta-button { display: inline-block; padding: 1rem 2.5rem; border-radius: var(--border-radius); text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: var(--transition); position: relative; overflow: hidden; background-color: var(--primary-color); color: var(--dark-navy); border: 1px solid var(--primary-color); box-shadow: 0 0 20px var(--primary-glow); cursor: pointer; }
+    .cta-button:hover { transform: translateY(-3px); box-shadow: 0 0 30px var(--primary-color); }
+
+    /* ======================= FOOTER ======================= */
+    .main-footer { background-color: var(--dark-navy); padding: 4rem 5% 2rem; border-top: 1px solid var(--light-navy); }
+    .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem; text-align: center; }
+    .footer-section h4 { color: var(--white); font-size: 1.2rem; margin-bottom: 1rem; }
+    .footer-section a { color: var(--slate); text-decoration: none; display: block; margin-bottom: 0.5rem; transition: var(--transition); }
+    .footer-section a:hover { color: var(--primary-color); }
+    .trust-badges { display: flex; gap: 1rem; justify-content: center; }
+    .trust-badges img { height: 40px; filter: grayscale(100%) brightness(1.5); }
+    .footer-bottom { text-align: center; border-top: 1px solid #1d2d44; padding-top: 2rem; }
+    .social-links { margin-top: 1rem; }
+    .social-links a { color: var(--slate); font-size: 1.5rem; margin: 0 0.5rem; }
+    .social-links a:hover { color: var(--primary-color); }
+    
+    /* ======================= RESPONSIVE DESIGN ======================= */
+    @media (max-width: 992px) {
+        .contact-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+        .navbar-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; flex-direction: column; background-color: var(--light-navy); text-align: center; padding: 2rem 0; gap: 1.5rem; }
+        .navbar-menu.active { display: flex; }
+        .hamburger { display: block; }
+        .page-header h1 { font-size: 2.5rem; }
+        @media (min-width: 768px) { .trust-badges { justify-content: flex-start; } .footer-content { text-align: left; } }
+    }
+  </style>
+</head>
+<body>
+
+    <!-- ======================= HEADER / NAVBAR ======================= -->
+    <header class="navbar" id="main-navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">OnWheels</a>
+            <div class="hamburger" id="mobile-menu"><i class="fas fa-bars"></i></div>
+            <nav class="navbar-menu" id="nav-menu">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="about.html" class="navbar-link">About</a>
+                <a href="services.html" class="navbar-link">Services</a>
+                <!-- <a href="book.html" class="navbar-link">Book a Ride</a> -->
+                <a href="shop.html" class="navbar-link">Shop</a>
+                <a href="mechanic.html" class="navbar-link">Book a Mechanic</a>
+                <a href="contact.html" class="navbar-link active">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ======================= PAGE HEADER ======================= -->
+    <section class="page-header">
+        <h1>Get In Touch</h1>
+        <p>We're here to help. Reach out to us for any questions or to schedule a service.</p>
+    </section>
+
+    <!-- ======================= CONTACT SECTION ======================= -->
+    <section id="contact-page">
+        <div class="container contact-layout">
+            <!-- Left Side: Contact Info -->
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Call for Emergencies</h4>
+                        <p><a href="tel:+919794575236">+91 97945 75236</a></p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>General Inquiries</h4>
+                        <p><a href="mailto:support@onwheelsmechanic.com">support@onwheelsmechanic.com</a></p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>Service Area</h4>
+                        <p>Prayagraj, Uttar Pradesh, India</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h4>Operating Hours</h4>
+                        <p>24 Hours a Day, 7 Days a Week</p>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115332.86173238644!2d81.79155702244484!3d25.42940289608638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399aca5253338661%3A0x4c502b4856b509e5!2sPrayagraj%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1671234567890!5m2!1sen!2sin" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+            <!-- Right Side: Contact Form -->
+            <div class="contact-form-container">
+                <h3>Send Us a Message</h3>
+                <form id="general-contact-form" novalidate>
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+                    <label for="phone">Your Phone</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your mobile number" required>
+
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="What is this regarding?" required>
+
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" rows="6" placeholder="Please describe your question or inquiry in detail..." required></textarea>
+
+                    <button type="submit" class="cta-button">Send via WhatsApp</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ======================= FOOTER ======================= -->
+    <!-- ======================= FOOTER ======================= -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section"><h4>OnWheels Mechanic</h4><p>Your trusted partner for 24/7 mobile auto repair and maintenance in Prayagraj.</p></div>
+                <div class="footer-section"><h4>Quick Links</h4><a href="about.html">About Us</a><a href="service.html">Services</a><a href="service.html">Service Area</a><a href="contact.html">Contact</a></div>
+                <div class="footer-section"><h4>Our Promise</h4><div class="trust-badges"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=ASE" alt="ASE Certified Badge"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=24/7" alt="24/7 Service Badge"></div></div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 OnWheels Mechanic. All rights reserved.</p>
+                <div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Navbar Scroll Effect ---
+        const navbar = document.getElementById('main-navbar');
+        if (navbar) { window.addEventListener('scroll', () => { window.scrollY > 50 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled'); }); }
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        if (mobileMenu && navMenu) { mobileMenu.addEventListener('click', () => { navMenu.classList.toggle('active'); }); }
+
+        // --- Contact Form to WhatsApp ---
+        const contactForm = document.getElementById('general-contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const whatsappNumber = '919794575236'; // !! IMPORTANT: REPLACE with your number
+
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const subject = document.getElementById('subject').value;
+                const messageBody = document.getElementById('message').value;
+
+                if (!name || !phone || !subject || !messageBody) {
+                    alert('Please fill out all the fields before submitting.');
+                    return;
+                }
+                
+                const message = `*New Contact Form Inquiry*
+
+*Name:* ${name}
+*Phone:* ${phone}
+*Subject:* ${subject}
+
+--- Message ---
+${messageBody}
+                `;
+
+                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            });
+        }
+    });
+    </script>
+</body>
+</html>
