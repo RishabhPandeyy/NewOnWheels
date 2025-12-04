@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OnWheels — Login / Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root{
+      --primary-color:#00A3FF;
+      --dark-navy:#0A192F;
+      --light-navy:#112240;
+      --white:#e6f1ff;
+      --slate:#8892b0;
+      --radius:12px;
+      --font:'Poppins',sans-serif;
+    }
+    html,body{height:100%;}
+    body{font-family:var(--font);margin:0;background:linear-gradient(180deg,var(--dark-navy),#071022);color:var(--slate);-webkit-font-smoothing:antialiased}
+    .navbar{display:flex;align-items:center;justify-content:space-between;padding:1rem 3%;position:sticky;top:0;background:transparent}
+    .navbar-logo{color:var(--white);font-weight:700;text-decoration:none;font-size:1.25rem}
+    .container{max-width:1000px;margin:3.5rem auto;padding:0 1.25rem}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.04);padding:2rem;border-radius:var(--radius);box-shadow:0 10px 30px rgba(2,12,27,0.6);color:var(--white)}
+    .auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+    @media(max-width:880px){.auth-grid{grid-template-columns:1fr}}
+    .tabs{display:flex;gap:0.5rem;margin-bottom:1rem}
+    .tab{flex:1;padding:0.8rem;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);text-align:center;cursor:pointer}
+    .tab.active{background:var(--primary-color);color:var(--dark-navy);font-weight:700}
+    label{display:block;font-size:0.85rem;color:var(--light-navy);margin-bottom:0.35rem}
+    input,select,textarea{width:100%;padding:0.85rem;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:var(--white);margin-bottom:0.75rem}
+    button.primary{background:var(--primary-color);color:var(--dark-navy);padding:0.9rem 1.1rem;border:none;border-radius:10px;font-weight:700;cursor:pointer;transition:all 0.3s}
+    button.primary:hover{opacity:0.9;transform:translateY(-2px)}
+    .muted{color:var(--slate);font-size:0.9rem}
+    .footer{margin-top:2.5rem;text-align:center;color:var(--slate);font-size:0.9rem}
+    .small-link{color:var(--primary-color);text-decoration:none;font-weight:600}
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a class="navbar-logo" href="index.html">OnWheels</a>
+    <nav>
+      <a href="about.html" style="color:var(--slate);text-decoration:none;margin-right:1rem">About</a>
+      <a href="mechanic.html" style="color:var(--slate);text-decoration:none;margin-right:1rem">Book</a>
+      <a href="shop.html" style="color:var(--slate);text-decoration:none">Shop</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <h2 style="margin:0">Account Access</h2>
+        <div class="tabs" role="tablist">
+          <div id="tab-login" class="tab active" role="tab">Login</div>
+          <div id="tab-signup" class="tab" role="tab">Sign Up</div>
+        </div>
+      </div>
+
+      <div class="auth-grid">
+        <div id="panel-login">
+          <form id="login-form" class="form">
+            <label for="login-email">Email or Phone</label>
+            <input id="login-email" name="identifier" type="text" placeholder="you@example.com or 9999999999" required>
+            <label for="login-pass">Password</label>
+            <input id="login-pass" name="password" type="password" placeholder="••••••••" required>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem">
+              <div class="muted">Forgot password? <a class="small-link" href="#">Recover</a></div>
+              <button type="submit" class="primary">Login</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="panel-signup" style="display:none">
+          <form id="signup-form">
+            <label for="signup-name">Full Name</label>
+            <input id="signup-name" name="name" type="text" placeholder="Your name" required>
+            <label for="signup-phone">Phone</label>
+            <input id="signup-phone" name="phone" type="tel" placeholder="9999999999">
+            <label for="signup-email">Email</label>
+            <input id="signup-email" name="email" type="email" placeholder="you@example.com">
+            <label for="signup-pass">Password</label>
+            <input id="signup-pass" name="password" type="password" placeholder="Choose a secure password" required>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem">
+              <div class="muted">By signing up you agree to our <a class="small-link" href="#">Terms</a></div>
+              <button type="submit" class="primary">Create Account</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer">Already have an account? <a class="small-link" href="#tab-login" id="footer-switch">Login</a></div>
+    </div>
+  </main>
+
+  <script>
+    const tabLogin = document.getElementById('tab-login');
+    const tabSignup = document.getElementById('tab-signup');
+    const panelLogin = document.getElementById('panel-login');
+    const panelSignup = document.getElementById('panel-signup');
+    
+    function showLogin(){ 
+      tabLogin.classList.add('active'); 
+      tabSignup.classList.remove('active'); 
+      panelLogin.style.display='block'; 
+      panelSignup.style.display='none'; 
+    }
+    
+    function showSignup(){ 
+      tabSignup.classList.add('active'); 
+      tabLogin.classList.remove('active'); 
+      panelSignup.style.display='block'; 
+      panelLogin.style.display='none'; 
+    }
+    
+    tabLogin.addEventListener('click', showLogin);
+    tabSignup.addEventListener('click', showSignup);
+    document.getElementById('footer-switch').addEventListener('click',(e)=>{e.preventDefault(); showLogin();});
+
+    // Login form handler
+    document.getElementById('login-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const identifier = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-pass').value;
+      
+      if (!identifier || !password) {
+        alert('Please enter email/phone and password');
+        return;
+      }
+
+      try {
+        const res = await fetch('http://127.0.0.1:4000/api/login', {
+          method:'POST', 
+          headers:{'Content-Type':'application/json'}, 
+          body: JSON.stringify({identifier, password})
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+          alert('Login failed: ' + (data.error || 'Unknown error'));
+          console.error('Login error:', data);
+          return;
+        }
+
+        // Store token and user info in localStorage
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        alert('✅ Logged in successfully! Welcome, ' + data.user.name);
+        console.log('Login successful:', data);
+        
+        // Clear form
+        document.getElementById('login-form').reset();
+      } catch (err) {
+        console.error('Login request error:', err);
+        alert('Network error: Unable to connect to backend');
+      }
+    });
+
+    // Signup form handler
+    document.getElementById('signup-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      
+      const name = document.getElementById('signup-name').value.trim();
+      const phone = document.getElementById('signup-phone').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-pass').value;
+
+      if (!name || !password || (!phone && !email)) {
+        alert('Please fill in all required fields (name, password, and either phone or email)');
+        return;
+      }
+
+      try {
+        const res = await fetch('http://127.0.0.1:4000/api/signup', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({name, phone, email, password})
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+          alert('Signup failed: ' + (data.error || 'Unknown error'));
+          console.error('Signup error:', data);
+          return;
+        }
+
+        // Store token and user info in localStorage
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        alert('✅ Account created successfully! Welcome, ' + data.user.name);
+        console.log('Signup successful:', data);
+        
+        // Reset form
+        document.getElementById('signup-form').reset();
+      } catch (err) {
+        console.error('Signup request error:', err);
+        alert('Network error: Unable to connect to backend');
+      }
+    });
+  </script>
+</body>
+</html>

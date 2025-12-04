@@ -185,7 +185,7 @@
     <!-- ======================= HEADER / NAVBAR (Same as index.html) ======================= -->
     <header class="navbar" id="main-navbar">
         <div class="navbar-container">
-            <a href="index.html" class="navbar-logo">OnWheels</a>
+            <a href="index.html" class="navbar-logo">MechWay</a>
             <div class="hamburger" id="mobile-menu"><i class="fas fa-bars"></i></div>
             <nav class="navbar-menu" id="nav-menu">
                 <a href="index.html" class="navbar-link">Home</a>
@@ -258,7 +258,7 @@
                         <i class="fas fa-map-marker-alt"></i> Use My Current Location
                     </button>
 
-                    <button type="submit" class="cta-button">Send Service Request via WhatsApp</button>
+                    <button type="button" id="submit-booking-btn" class="cta-button">Request Service</button>
                 </form>
             </div>
         </div>
@@ -280,33 +280,48 @@
         </div>
     </footer>
 
-    <!-- Re-using the exact same JavaScript from your index.html -->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- Navbar Scroll Effect ---
-        const navbar = document.getElementById('main-navbar');
-        if (navbar) { window.addEventListener('scroll', () => { window.scrollY > 50 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled'); }); }
+    // Wait for DOM to fully load
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("🔧 Mechanic.html DOM loaded");
 
-        // --- Mobile Menu Toggle ---
+        // Navbar functionality
+        const navbar = document.getElementById('main-navbar');
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // Mobile menu
         const mobileMenu = document.getElementById('mobile-menu');
         const navMenu = document.getElementById('nav-menu');
-        if (mobileMenu && navMenu) { mobileMenu.addEventListener('click', () => { navMenu.classList.toggle('active'); }); }
+        if (mobileMenu && navMenu) {
+            mobileMenu.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
 
-        // --- Dynamic Vehicle Brand/Model Form Logic ---
+        // Vehicle brand/model selector
         const vehicleData = {
             Car: ['Maruti Suzuki', 'Hyundai', 'Tata Motors', 'Mahindra', 'Kia', 'Toyota', 'Honda', 'Volkswagen', 'Skoda', 'Renault', 'MG', 'Other'],
             Bike: ['Hero MotoCorp', 'Honda', 'TVS', 'Bajaj', 'Royal Enfield', 'Suzuki', 'Yamaha', 'KTM', 'Jawa', 'Other']
         };
+
         const vehicleTypeSelect = document.getElementById('vehicle-type');
         const brandSelect = document.getElementById('vehicle-brand');
         const specificsContainer = document.getElementById('vehicle-specifics');
 
-        if(vehicleTypeSelect) {
-            vehicleTypeSelect.addEventListener('change', (e) => {
-                const selection = e.target.value;
-                brandSelect.innerHTML = '<option value="" disabled selected>Select Brand...</option>'; // Reset
+        if (vehicleTypeSelect) {
+            vehicleTypeSelect.addEventListener('change', function() {
+                const selection = this.value;
+                brandSelect.innerHTML = '<option value="" disabled selected>Select Brand...</option>';
                 
-                if(selection && vehicleData[selection]) {
+                if (selection && vehicleData[selection]) {
                     vehicleData[selection].forEach(brand => {
                         const option = document.createElement('option');
                         option.value = brand;
@@ -320,92 +335,134 @@
             });
         }
 
-        // --- Geolocation Button Logic ---
+        // MAIN: Submit booking button
+        const submitBtn = document.getElementById('submit-booking-btn');
+        console.log("🔍 Looking for submit button...");
+        console.log("📌 Submit button element:", submitBtn);
+
+        if (submitBtn) {
+            console.log("✅ Submit button found! Attaching click handler...");
+            
+            submitBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                console.log("🚀 BUTTON CLICKED!");
+                
+                // Get form values
+                const name = document.getElementById('name').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const vehicleType = document.getElementById('vehicle-type').value.trim();
+                const vehicleBrand = document.getElementById('vehicle-brand').value.trim();
+                const vehicleModel = document.getElementById('vehicle-model').value.trim();
+                const problem = document.getElementById('problem').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                console.log("📝 Form data:", {name, phone, vehicleType, vehicleBrand, vehicleModel, problem, message});
+
+                // Validate
+                if (!name || !phone || !vehicleType || !message) {
+                    alert('❌ Please fill all required fields (Name, Phone, Vehicle Type, Message)');
+                    console.warn("❌ Validation failed");
+                    return;
+                }
+
+                // Clean phone
+                const cleanPhone = phone.replace(/\D/g, '');
+                console.log("📞 Original phone:", phone, "→ Cleaned:", cleanPhone);
+
+                const data = {
+                    name,
+                    phone: cleanPhone,
+                    vehicleType,
+                    vehicleBrand,
+                    vehicleModel,
+                    problem,
+                    message,
+                    latitude: '',
+                    longitude: ''
+                };
+
+                try {
+                    // Show loading
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                    console.log("⏳ Sending request...");
+
+                    // Construct backend URL
+                    let backendURL = 'http://127.0.0.1:4000/api/book';
+                    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                        backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/book';
+                    }
+                    console.log("🌐 Backend URL:", backendURL);
+
+                    // Send request
+                    const response = await fetch(backendURL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    console.log("📡 Response status:", response.status);
+                    const result = await response.json();
+                    console.log("📊 Response data:", result);
+
+                    if (response.ok && result.ok) {
+                        alert('✅ SUCCESS!\n\nYour service request has been saved!\n\nWe will contact you at: ' + cleanPhone + '\n\nThank you!');
+                        document.getElementById('contact-form').reset();
+                        console.log("✅ Success!");
+                    } else {
+                        throw new Error(result.error || 'Request failed');
+                    }
+                } catch (err) {
+                    console.error('❌ ERROR:', err);
+                    alert('❌ FAILED!\n\nError: ' + err.message + '\n\nCall us: +91 9794575236');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            });
+        } else {
+            console.error("❌ Submit button NOT found!");
+        }
+
+        // Geolocation
         const getLocationBtn = document.getElementById('getLocationBtn');
         const messageTextarea = document.getElementById('message');
         if (getLocationBtn && messageTextarea) {
             getLocationBtn.addEventListener('click', () => {
                 if (!navigator.geolocation) {
-                    alert('Geolocation is not supported by your browser.');
+                    alert('Geolocation not supported');
                     return;
                 }
                 getLocationBtn.disabled = true;
-                getLocationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fetching Location...';
-                function success(position) {
-                    const latitude  = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+                getLocationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fetching...';
+                
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+                    
                     fetch(apiUrl)
-                        .then(response => response.json())
+                        .then(r => r.json())
                         .then(data => {
-                            const address = data.display_name || `Lat: ${latitude}, Lon: ${longitude}`;
-                            const locationText = `My Current Location:\n${address}\n\n---\n`;
-                            messageTextarea.value = locationText + messageTextarea.value;
+                            const address = data.display_name || `Lat: ${lat}, Lon: ${lon}`;
+                            messageTextarea.value = `My Location:\n${address}\n\n---\n` + messageTextarea.value;
                             getLocationBtn.innerHTML = '<i class="fas fa-check"></i> Location Added!';
                             setTimeout(() => {
                                 getLocationBtn.disabled = false;
-                                getLocationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Use My Current Location';
+                                getLocationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Use My Location';
                             }, 2000);
                         })
                         .catch(() => {
-                            alert('Could not fetch address details. Coordinates have been added. Please add a nearby landmark.');
-                            messageTextarea.value = `My Current Location (Lat/Lon):\n${latitude}, ${longitude}\n\n---\n` + messageTextarea.value;
-                            resetButton();
+                            messageTextarea.value = `My Location:\nLat: ${lat}, Lon: ${lon}\n\n---\n` + messageTextarea.value;
+                            getLocationBtn.disabled = false;
+                            getLocationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Use My Location';
                         });
-                }
-                function error() {
-                    alert('Unable to retrieve your location. Please ensure location services are enabled and you have granted permission.');
-                    resetButton();
-                }
-                function resetButton() {
+                }, function() {
+                    alert('Location access denied');
                     getLocationBtn.disabled = false;
-                    getLocationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Use My Current Location';
-                }
-                navigator.geolocation.getCurrentPosition(success, error);
-            });
-        }
-
-        // --- Contact Form to WhatsApp ---
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(event) {
-                event.preventDefault(); 
-                
-                const whatsappNumber = '919794575236';
-
-                // Get form values
-                const name = document.getElementById('name').value;
-                const phone = document.getElementById('phone').value;
-                const vehicleType = document.getElementById('vehicle-type').value;
-                const brand = document.getElementById('vehicle-brand').value;
-                const model = document.getElementById('vehicle-model').value;
-                const service = document.getElementById('problem').value;
-                const details = document.getElementById('message').value;
-
-                // Basic validation
-                if (!name || !phone || !vehicleType || !brand || !model || !service || !details) {
-                    alert('Please fill out all the fields before submitting.');
-                    return;
-                }
-                
-                const message = `*New Service Request from Website*
-
-*Name:* ${name}
-*Phone:* ${phone}
-
---- Vehicle Details ---
-*Type:* ${vehicleType}
-*Brand:* ${brand}
-*Model:* ${model}
-
---- Service Request ---
-*Service Needed:* ${service}
-*Details:*
-${details}
-                `;
-
-                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
+                    getLocationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Use My Location';
+                });
             });
         }
     });

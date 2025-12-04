@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ================================================== -->
+  <!-- ============== PRIMARY SEO META TAGS ============== -->
+  <!-- ================================================== -->
+  <title>Became A Mechanic - OnWheels</title>
+  <meta name="description" content="Create an account with OnWheels to book a mechanic, track your service history, and manage your account details.">
+  <meta name="keywords" content="onwheels signup, create account, car repair account, bike service register">
+  <meta name="author" content="OnWheels Mechanic">
+  <meta name="robots" content="noindex, follow"> <!-- No need to index signup pages -->
+  <link rel="canonical" href="https://www.onwheelsmechanic.com/signup.html"> <!-- !! REPLACE with your actual URL !! -->
+  
+  <!-- Social Media, Fonts, and Icons (Same as other pages) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Re-using the exact same CSS theme from login.html -->
+  <style>
+    /* --- Premium Variables & General Styling --- */
+    :root {
+        --primary-color: #00A3FF;
+        --primary-glow: rgba(0, 163, 255, 0.3);
+        --dark-navy: #0A192F;
+        --light-navy: #112240;
+        --slate: #8892b0;
+        --light-slate: #a8b2d1;
+        --white: #e6f1ff;
+        --font-family: 'Poppins', sans-serif;
+        --border-radius: 12px;
+        --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: var(--font-family);
+        line-height: 1.6;
+        color: var(--slate);
+        overflow-x: hidden;
+        background: linear-gradient(rgba(10, 25, 47, 0.95), rgba(10, 25, 47, 0.95)), url('service.jpg') no-repeat center center/cover;
+        background-attachment: fixed;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    
+    /* ======================= NAVBAR ======================= */
+    .navbar { background: transparent; padding: 1.5rem 5%; position: fixed; width: 100%; top: 0; z-index: 1000; transition: all 0.3s ease-in-out; }
+    .navbar.scrolled { background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px); padding: 0.8rem 5%; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+    .navbar-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .navbar-logo { color: var(--white); font-size: 1.8rem; font-weight: 700; text-decoration: none; }
+    .navbar-menu { display: flex; align-items: center; list-style: none; gap: 2rem; }
+    .navbar-link { color: var(--light-slate); text-decoration: none; transition: var(--transition); }
+    .navbar-link:hover, .navbar-link.active { color: var(--primary-color); }
+    .call-now-button { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.2rem; border: 1px solid var(--primary-color); border-radius: var(--border-radius); color: var(--primary-color); text-decoration: none; transition: var(--transition); }
+    .call-now-button:hover { background-color: var(--primary-glow); box-shadow: 0 0 15px var(--primary-glow); }
+    .hamburger { display: none; color: var(--white); font-size: 1.8rem; cursor: pointer; }
+
+    /* ======================= SIGNUP FORM SECTION ======================= */
+    .auth-section {
+        padding: 8rem 5% 6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 110vh; /* Taller min-height for longer form */
+        animation: fadeInPage 0.5s ease-in-out;
+    }
+    .auth-container {
+        background-color: var(--light-navy);
+        padding: 3.5rem 3rem;
+        border-radius: var(--border-radius);
+        width: 100%;
+        max-width: 750px; /* Slightly wider for better field spacing */
+        text-align: center;
+        box-shadow: 0 10px 40px -15px rgba(0,0,0,0.7);
+        border: 1px solid transparent;
+        background-image: linear-gradient(var(--light-navy), var(--light-navy)),
+                          radial-gradient(circle at top left, var(--primary-color), var(--dark-navy) 70%);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+    }
+    .auth-title {
+        font-size: 2.5rem;
+        color: var(--white);
+        margin-bottom: 0.75rem;
+    }
+    .auth-subtitle {
+        color: var(--light-slate);
+        margin-bottom: 2.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+        text-align: left;
+        position: relative;
+    }
+    .form-group label {
+        display: block;
+        color: var(--light-slate);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 60%;
+        color: var(--slate);
+        transition: var(--transition);
+        font-size: 1rem;
+    }
+    .form-input {
+        width: 100%;
+        padding: 0.9rem 1rem 0.9rem 2.8rem;
+        background-color: var(--dark-navy);
+        border: 1px solid #1d2d44;
+        border-radius: 8px;
+        color: var(--white);
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+    .form-input::placeholder { color: var(--slate); opacity: 0.7; }
+    .form-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    .form-input:focus ~ .input-icon {
+        color: var(--primary-color);
+    }
+
+    .form-button {
+        width: 100%;
+        padding: 0.9rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: var(--transition);
+        cursor: pointer;
+        background-color: var(--primary-color);
+        color: var(--dark-navy);
+        border: none;
+        margin-top: 1rem;
+    }
+    .form-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 25px var(--primary-glow);
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: var(--slate);
+        margin: 2.5rem 0;
+    }
+    .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #1d2d44;
+    }
+    .divider:not(:empty)::before { margin-right: .75em; }
+    .divider:not(:empty)::after { margin-left: .75em; }
+
+    .social-login-button {
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: var(--transition);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+        border: 1px solid #1d2d44;
+    }
+    .social-login-button i { font-size: 1.2rem; }
+    .social-login-button:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    
+    .google-btn { background-color: #FFF; color: #333; }
+    .google-btn:hover { border-color: #FFF; }
+    .whatsapp-btn { background-color: #25D366; color: #FFF; border-color: #25D366; }
+    .whatsapp-btn:hover { background-color: #1EBE57; border-color: #1EBE57; }
+
+    .form-footer {
+        margin-top: 2rem;
+        font-size: 0.9rem;
+    }
+    .form-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .form-footer a:hover { text-decoration: underline; }
+
+    @keyframes fadeInPage {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ======================= FOOTER ======================= */
+    .main-footer { 
+        background-color: transparent;
+        padding: 4rem 5% 2rem; 
+        border-top: 1px solid var(--light-navy); 
+    }
+    .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem; text-align: center; }
+    .footer-section h4 { color: var(--white); font-size: 1.2rem; margin-bottom: 1rem; }
+    .footer-section a { color: var(--slate); text-decoration: none; display: block; margin-bottom: 0.5rem; transition: var(--transition); }
+    .footer-section a:hover { color: var(--primary-color); }
+    .trust-badges { display: flex; gap: 1rem; justify-content: center; }
+    .trust-badges img { height: 40px; filter: grayscale(100%) brightness(1.5); }
+    .footer-bottom { text-align: center; border-top: 1px solid #1d2d44; padding-top: 2rem; }
+    .social-links { margin-top: 1rem; }
+    .social-links a { color: var(--slate); font-size: 1.5rem; margin: 0 0.5rem; }
+    .social-links a:hover { color: var(--primary-color); }
+
+    /* ======================= RESPONSIVE DESIGN ======================= */
+    @media (max-width: 768px) {
+        .navbar-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; flex-direction: column; background-color: var(--light-navy); text-align: center; padding: 2rem 0; gap: 1.5rem; }
+        .navbar-menu.active { display: flex; }
+        .hamburger { display: block; }
+        .auth-section { padding: 8rem 5% 4rem; min-height: 100vh; }
+        .auth-container { padding: 2.5rem 1.5rem; }
+        .auth-title { font-size: 2rem; }
+        @media (min-width: 768px) { .trust-badges { justify-content: flex-start; } .footer-content { text-align: left; } }
+    }
+  </style>
+</head>
+<body>
+
+    <!-- ======================= HEADER / NAVBAR ======================= -->
+    <header class="navbar" id="main-navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">MechWay</a>
+            <div class="hamburger" id="mobile-menu"><i class="fas fa-bars"></i></div>
+            <nav class="navbar-menu" id="nav-menu">
+                <a href="index.html" class="navbar-link">Home</a>
+                <a href="about.html" class="navbar-link">About</a>
+                <a href="services.html" class="navbar-link">Services</a>
+                <a href="shop.html" class="navbar-link">Shop</a>
+                <a href="mechanic.html" class="navbar-link">Book a Mechanic</a>
+                <a href="tel:+919794575236" class="call-now-button"><i class="fas fa-phone"></i>Book Via Call</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ======================= SIGNUP SECTION ======================= -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <h1 class="auth-title">Became A Mechanic</h1>
+            <p class="auth-subtitle">Join OnWheels for hassle-free vehicle care.</p>
+
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="fullname" name="fullname" class="form-input" required placeholder="e.g., John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" class="form-input" required placeholder="you@example.com">
+                </div>
+                 <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <i class="fas fa-phone input-icon"></i>
+                    <input type="tel" id="phone" name="phone" class="form-input" required placeholder="+91 12345 67890">
+                </div>
+                <div class="form-group">
+                    <label for="mechanic-type">Mechanic Type</label>
+                    <i class="fas fa-car input-icon"></i>
+                    <select id="mechanic-type" name="mechanic-type" class="form-input" required>
+                        <option value="" disabled selected>Select mechanic type</option>
+                        <option value="car">Car Mechanic</option>
+                        <option value="bike">Bike Mechanic</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" class="form-input" required placeholder="••••••••••••">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="confirm-password" name="confirm-password" class="form-input" required placeholder="••••••••••••">
+                </div>
+                <button type="submit" class="form-button">Create Account</button>
+            </form>
+
+            <div class="divider">OR</div>
+
+            <a href="#" class="social-login-button google-btn">
+                <i class="fab fa-google"></i> Sign up with Google
+            </a>
+            <a href="#" class="social-login-button whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Sign up with WhatsApp
+            </a>
+
+            <!-- <div class="form-footer">
+                <p>Already have an account? <a href="login.html">Log In</a></p>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- ======================= FOOTER ======================= -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section"><h4>OnWheels Mechanic</h4><p>Your trusted partner for 24/7 mobile auto repair and maintenance in Prayagraj.</p></div>
+                <div class="footer-section"><h4>Quick Links</h4><a href="about.html">About Us</a><a href="service.html">Services</a><a href="service.html">Service Area</a><a href="contact.html">Contact</a></div>
+                <div class="footer-section"><h4>Our Promise</h4><div class="trust-badges"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=ASE" alt="ASE Certified Badge"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=24/7" alt="24/7 Service Badge"></div></div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 OnWheels Mechanic. All rights reserved.</p>
+                <div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Re-using the exact same JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const navbar = document.getElementById('main-navbar');
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        if (mobileMenu && navMenu) {
+            mobileMenu.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Signup form handler
+        const signupForm = document.querySelector('form');
+        if (signupForm) {
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('fullname').value.trim();
+                const email = document.getElementById('email').value.trim();
+                let phone = document.getElementById('phone').value.trim();
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                const mechanicType = document.getElementById('mechanic-type').value;
+                
+                // Strip non-digit characters from phone (keeps only 0-9)
+                phone = phone.replace(/\D/g, '');
+                
+                if (!name || !email || !phone || !password || !confirmPassword) {
+                    alert('Please fill in all fields.');
+                    return;
+                }
+                if (!mechanicType) {
+                    alert('Please select a mechanic type (Car or Bike).');
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match.');
+                    return;
+                }
+                try {
+                    // Detect backend URL: if on localhost/Live Server, use 127.0.0.1:4000; else construct from current origin
+                    let backendURL = 'http://127.0.0.1:4000/api/signup';
+                    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                        // On a mobile or remote device, try to connect to backend on same host (modify port if needed)
+                        backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/signup';
+                    }
+                    
+                    const res = await fetch(backendURL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, phone, password, mechanicType })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        alert('Signup failed: ' + (data.error || 'Unknown error'));
+                        return;
+                    }
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    alert('Account created successfully! Welcome, ' + data.user.name);
+                    signupForm.reset();
+                } catch (err) {
+                    alert('Network error: Unable to connect to backend');
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>

@@ -137,7 +137,7 @@
     <!-- ======================= HEADER / NAVBAR ======================= -->
  <header class="navbar" id="main-navbar">
         <div class="navbar-container">
-            <a href="index.html" class="navbar-logo">OnWheels</a>
+            <a href="index.html" class="navbar-logo">MechWay</a>
             <div class="hamburger" id="mobile-menu"><i class="fas fa-bars"></i></div>
             <nav class="navbar-menu" id="nav-menu">
                 <a href="index.html" class="navbar-link">Home</a>
@@ -300,14 +300,51 @@
             });
         });
 
-        // --- Product Inquiry to WhatsApp ---
+        // --- Product Inquiry: prompt for name/phone, POST to backend, then open WhatsApp ---
         const inquireButtons = document.querySelectorAll('.btn-inquire');
         inquireButtons.forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', async () => {
                 const productName = button.dataset.product;
-                const message = `Hello, I'm interested in buying the following product from your website:\n\n*Product:* ${productName}\n\nPlease let me know about its availability and price. Thank you.`;
-                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
+                const name = window.prompt('Your name (required)');
+                if (!name) { alert('Name required'); return; }
+                let phone = window.prompt('Your phone number (required)');
+                if (!phone) { alert('Phone required'); return; }
+
+                // Strip non-digit characters from phone
+                phone = phone.replace(/\D/g, '');
+
+                const payload = { product_name: productName, name, phone, message: '' };
+                try {
+                    // Detect backend URL
+                    let backendURL = 'http://127.0.0.1:4000/api/inquiry';
+                    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                        backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/inquiry';
+                    }
+                    
+                    console.log("Sending inquiry data:", payload);
+                    const res = await fetch(backendURL, { 
+                        method: 'POST', 
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }, 
+                        body: JSON.stringify(payload),
+                        mode: 'cors',
+                        credentials: 'omit'
+                    });
+                    console.log("Response status:", res.status);
+                    const data = await res.json();
+                    console.log("Response data:", data);
+                    if (res.ok && data.ok) {
+                        alert('✅ Inquiry saved! We will contact you soon.');
+                    } else {
+                        throw new Error(data.error || `HTTP ${res.status}: ${res.statusText}`);
+                    }
+                } catch (err) {
+                    console.error('Inquiry error:', err);
+                    console.error('Error details:', err.message);
+                    alert(`❌ Error saving inquiry: ${err.message}`);
+                }
             });
         });
     });

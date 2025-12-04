@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ================================================== -->
+<!-- ============== PRIMARY SEO META TAGS ============== -->
+<!-- ================================================== -->
+<title>Login / Signup - OnWheels</title>
+<meta name="description" content="Login or create an account with OnWheels to book a mechanic, track your service history, and manage your account details.">
+<meta name="keywords" content="onwheels login, onwheels signup, car repair account, bike service login">
+<meta name="author" content="OnWheels Mechanic">
+<meta name="robots" content="noindex, follow"> <!-- No need to index login pages -->
+<link rel="canonical" href="https://www.onwheelsmechanic.com/login.html"> <!-- !! REPLACE with your actual URL !! -->
+<!-- Social Media, Fonts, and Icons (Same as other pages) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<!-- Re-using the exact same CSS theme with new styles -->
+<style>
+/* --- Premium Variables & General Styling (Copied from service.html) --- */
+:root {
+--primary-color: #00A3FF;
+--primary-glow: rgba(0, 163, 255, 0.3);
+--dark-navy: #0A192F;
+--light-navy: #112240;
+--slate: #8892b0;
+--light-slate: #a8b2d1;
+--white: #e6f1ff;
+--font-family: 'Poppins', sans-serif;
+--border-radius: 12px;
+--transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+--section-padding: 6rem 5%;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+font-family: var(--font-family);
+line-height: 1.6;
+color: var(--slate);
+overflow-x: hidden;
+/* --- NEW: BACKGROUND IMAGE STYLING --- */
+background: linear-gradient(rgba(10, 25, 47, 0.95), rgba(10, 25, 47, 0.95)), url('service.jpg') no-repeat center center/cover;
+background-attachment: fixed; /* Makes the background stay in place on scroll */
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+/* ======================= NAVBAR (Copied from service.html) ======================= */
+.navbar { background: transparent; padding: 1.5rem 5%; position: fixed; width: 100%; top: 0; z-index: 1000; transition: all 0.3s ease-in-out; }
+.navbar.scrolled { background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px); padding: 0.8rem 5%; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+.navbar-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+.navbar-logo { color: var(--white); font-size: 1.8rem; font-weight: 700; text-decoration: none; }
+.navbar-menu { display: flex; align-items: center; list-style: none; gap: 2rem; }
+.navbar-link { color: var(--light-slate); text-decoration: none; transition: var(--transition); }
+.navbar-link:hover, .navbar-link.active { color: var(--primary-color); }
+.call-now-button { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.2rem; border: 1px solid var(--primary-color); border-radius: var(--border-radius); color: var(--primary-color); text-decoration: none; transition: var(--transition); }
+.call-now-button:hover { background-color: var(--primary-glow); box-shadow: 0 0 15px var(--primary-glow); }
+.hamburger { display: none; color: var(--white); font-size: 1.8rem; cursor: pointer; }
+
+/* ======================= LOGIN/SIGNUP FORM SECTION (STYLISH VERSION) ======================= */
+.login-section {
+padding: 8rem 5% 6rem;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+animation: fadeInPage 0.5s ease-in-out;
+margin-top: 60px; /* To offset fixed navbar */
+}
+.login-container {
+background-color: var(--light-navy);
+padding: 3.5rem 3rem; /* Increased vertical padding for taller look */
+border-radius: var(--border-radius);
+width: 100%;
+max-width: 750px; /* Slightly narrower for vertical emphasis */
+text-align: center;
+box-shadow: 0 10px 40px -15px rgba(0,0,0,0.7);
+/* Stylish Gradient Border */
+border: 1px solid transparent;
+background-image: linear-gradient(var(--light-navy), var(--light-navy)),
+radial-gradient(circle at top left, var(--primary-color), var(--dark-navy) 70%);
+background-origin: border-box;
+background-clip: padding-box, border-box;
+}
+.login-title {
+font-size: 2.5rem;
+color: var(--white);
+margin-bottom: 0.75rem;
+}
+.login-subtitle {
+color: var(--light-slate);
+margin-bottom: 2.5rem;
+}
+
+.form-group {
+margin-bottom: 1.5rem;
+text-align: left;
+position: relative; /* For icon positioning */
+}
+.form-group label {
+display: block;
+color: var(--light-slate);
+margin-bottom: 0.5rem;
+font-size: 0.9rem;
+font-weight: 500;
+}
+.input-icon {
+position: absolute;
+left: 1rem;
+top: 60%;
+color: var(--slate);
+transition: var(--transition);
+font-size: 1rem;
+}
+.form-input {
+width: 100%;
+padding: 0.9rem 1rem 0.9rem 2.8rem; /* Make space for the icon */
+background-color: var(--dark-navy);
+border: 1px solid #1d2d44;
+border-radius: 8px;
+color: var(--white);
+font-size: 1rem;
+transition: var(--transition);
+}
+.form-input::placeholder { color: var(--slate); opacity: 0.7; }
+.form-input:focus {
+outline: none;
+border-color: var(--primary-color);
+box-shadow: 0 0 0 3px var(--primary-glow);
+}
+.form-input:focus ~ .input-icon {
+color: var(--primary-color);
+}
+
+.form-button {
+width: 100%;
+padding: 0.9rem;
+border-radius: 8px;
+text-decoration: none;
+font-weight: 600;
+font-size: 1.1rem;
+transition: var(--transition);
+cursor: pointer;
+background-color: var(--primary-color);
+color: var(--dark-navy);
+border: none;
+margin-top: 1rem;
+}
+.form-button:hover {
+transform: translateY(-3px);
+box-shadow: 0 0 25px var(--primary-glow);
+}
+
+.divider {
+display: flex;
+align-items: center;
+text-align: center;
+color: var(--slate);
+margin: 2.5rem 0;
+}
+.divider::before, .divider::after {
+content: '';
+flex: 1;
+border-bottom: 1px solid #1d2d44;
+}
+.divider:not(:empty)::before { margin-right: .75em; }
+.divider:not(:empty)::after { margin-left: .75em; }
+
+.social-login-button {
+width: 100%;
+padding: 0.8rem;
+border-radius: 8px;
+text-decoration: none;
+font-weight: 500;
+font-size: 1rem;
+transition: var(--transition);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.8rem;
+margin-bottom: 1rem;
+border: 1px solid #1d2d44;
+}
+.social-login-button i { font-size: 1.2rem; }
+.social-login-button:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
+.google-btn { background-color: #FFF; color: #333; }
+.google-btn:hover { border-color: #FFF; }
+.whatsapp-btn { background-color: #25D366; color: #FFF; border-color: #25D366; }
+.whatsapp-btn:hover { background-color: #1EBE57; border-color: #1EBE57; }
+
+.form-footer {
+margin-top: 2rem;
+font-size: 0.9rem;
+}
+.form-footer a {
+color: var(--primary-color);
+text-decoration: none;
+font-weight: 600;
+}
+.form-footer a:hover { text-decoration: underline; }
+
+/* Page Load Animation */
+@keyframes fadeInPage {
+from { opacity: 0; transform: translateY(-10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* ======================= FOOTER (STILL VISIBLE) ======================= */
+.main-footer {
+background-color: transparent; /* Makes footer transparent to show body background */
+padding: 4rem 5% 2rem;
+border-top: 1px solid var(--light-navy);
+}
+.footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem; text-align: center; }
+.footer-section h4 { color: var(--white); font-size: 1.2rem; margin-bottom: 1rem; }
+.footer-section a { color: var(--slate); text-decoration: none; display: block; margin-bottom: 0.5rem; transition: var(--transition); }
+.footer-section a:hover { color: var(--primary-color); }
+.trust-badges { display: flex; gap: 1rem; justify-content: center; }
+.trust-badges img { height: 40px; filter: grayscale(100%) brightness(1.5); }
+.footer-bottom { text-align: center; border-top: 1px solid #1d2d44; padding-top: 2rem; }
+.social-links { margin-top: 1rem; }
+.social-links a { color: var(--slate); font-size: 1.5rem; margin: 0 0.5rem; }
+.social-links a:hover { color: var(--primary-color); }
+
+/* ======================= RESPONSIVE DESIGN (Copied & Adjusted) ======================= */
+@media (max-width: 768px) {
+.navbar-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; flex-direction: column; background-color: var(--light-navy); text-align: center; padding: 2rem 0; gap: 1.5rem; }
+.navbar-menu.active { display: flex; }
+.hamburger { display: block; }
+.login-section { padding: 8rem 5% 4rem; }
+.login-container { padding: 2.5rem 1.5rem; }
+.login-title { font-size: 2rem; }
+@media (min-width: 768px) { .trust-badges { justify-content: flex-start; } .footer-content { text-align: left; } }
+}
+</style>
+</head>
+<body>
+    
+<!-- ======================= HEADER / NAVBAR ======================= -->
+<header class="navbar" id="main-navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="navbar-logo">OnWheels</a>
+        <div class="hamburger" id="mobile-menu"><i class="fas fa-bars"></i></div>
+        <nav class="navbar-menu" id="nav-menu">
+            <a href="index.html" class="navbar-link">Home</a>
+            <a href="about.html" class="navbar-link">About</a>
+            <a href="services.html" class="navbar-link">Services</a>
+            <a href="shop.html" class="navbar-link">Shop</a>
+            <a href="mechanic.html" class="navbar-link">Book a Mechanic</a>
+            <a href="tel:+919794575236" class="call-now-button"><i class="fas fa-phone"></i>Book Via Call</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ======================= LOGIN/SIGNUP SECTION ======================= -->
+<section class="login-section">
+    <div class="login-container">
+        <h1 class="login-title">Get Started</h1>
+        <p class="login-subtitle">Access your account or create a new one.</p>
+
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="email" name="email" class="form-input" required placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="password" name="password" class="form-input" required placeholder="••••••••••••">
+            </div>
+            <button type="submit" class="form-button">Login</button>
+        </form>
+
+        <div class="divider">OR</div>
+
+        <a href="#" class="social-login-button google-btn">
+            <i class="fab fa-google"></i> Continue with Google
+        </a>
+        <a href="#" class="social-login-button whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> Continue with WhatsApp
+        </a>
+
+        <div class="form-footer">
+            <p>By continuing, you agree to our <a href="#">Terms of Service</a>.</p>
+        </div>
+         <div class="form-footer">
+                <p>Don't Have account? <a href="Signup.html">Sign Up</a></p>
+            </div>
+    </div>
+</section>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section"><h4>OnWheels Mechanic</h4><p>Your trusted partner for 24/7 mobile auto repair and maintenance in Prayagraj.</p></div>
+            <div class="footer-section"><h4>Quick Links</h4><a href="about.html">About Us</a><a href="service.html">Services</a><a href="service.html">Service Area</a><a href="contact.html">Contact</a></div>
+            <div class="footer-section"><h4>Our Promise</h4><div class="trust-badges"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=ASE" alt="ASE Certified Badge"><img src="https://via.placeholder.com/80x50/FFFFFF/0A192F?text=24/7" alt="24/7 Service Badge"></div></div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 OnWheels Mechanic. All rights reserved.</p>
+            <div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div>
+        </div>
+    </div>
+</footer>
+
+<!-- Re-using the exact same JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Navbar Scroll Effect ---
+    const navbar = document.getElementById('main-navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+
+    // --- Mobile Menu Toggle ---
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navMenu = document.getElementById('nav-menu');
+    if (mobileMenu && navMenu) {
+        mobileMenu.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
+
+    // Login form handler
+    const loginForm = document.querySelector('form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let identifier = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            if (!identifier || !password) {
+                alert('Please enter email/phone and password.');
+                return;
+            }
+            try {
+                // Detect backend URL: if on localhost/Live Server, use 127.0.0.1:4000; else construct from current origin
+                let backendURL = 'http://127.0.0.1:4000/api/login';
+                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                    // On a mobile or remote device, try to connect to backend on same host (modify port if needed)
+                    backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/login';
+                }
+                
+                const res = await fetch(backendURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: identifier, password })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('Login failed: ' + (data.error || 'Unknown error'));
+                    return;
+                }
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                alert('Logged in successfully! Welcome, ' + data.user.name);
+                loginForm.reset();
+            } catch (err) {
+                alert('Network error: Unable to connect to backend');
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>

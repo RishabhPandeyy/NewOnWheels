@@ -169,7 +169,7 @@
     <!-- ======================= HEADER / NAVBAR ======================= -->
     <header class="navbar" id="main-navbar">
         <div class="navbar-container">
-            <a href="index.html" class="navbar-logo">OnWheels</a>
+            <a href="index.html" class="navbar-logo">MechWay</a>
             <div class="hamburger" id="mobile-menu"><i class="fas fa-bars"></i></div>
             <nav class="navbar-menu" id="nav-menu">
                 <a href="index.html" class="navbar-link">Home</a>
@@ -249,7 +249,7 @@
                     <label for="message">Your Message</label>
                     <textarea id="message" name="message" rows="6" placeholder="Please describe your question or inquiry in detail..." required></textarea>
 
-                    <button type="submit" class="cta-button">Send via WhatsApp</button>
+                    <button type="submit" class="cta-button">Send Message</button>
                 </form>
             </div>
         </div>
@@ -282,36 +282,61 @@
         const navMenu = document.getElementById('nav-menu');
         if (mobileMenu && navMenu) { mobileMenu.addEventListener('click', () => { navMenu.classList.toggle('active'); }); }
 
-        // --- Contact Form to WhatsApp ---
+        // --- Contact Form: send to backend then open WhatsApp ---
         const contactForm = document.getElementById('general-contact-form');
         if (contactForm) {
-            contactForm.addEventListener('submit', function(event) {
+            contactForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
-                
-                const whatsappNumber = '919794575236'; // !! IMPORTANT: REPLACE with your number
 
-                const name = document.getElementById('name').value;
-                const phone = document.getElementById('phone').value;
-                const subject = document.getElementById('subject').value;
-                const messageBody = document.getElementById('message').value;
+                const whatsappNumber = '919794575236';
+
+                const name = document.getElementById('name').value.trim();
+                let phone = document.getElementById('phone').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const messageBody = document.getElementById('message').value.trim();
+
+                // Strip non-digit characters from phone
+                phone = phone.replace(/\D/g, '');
 
                 if (!name || !phone || !subject || !messageBody) {
                     alert('Please fill out all the fields before submitting.');
                     return;
                 }
-                
-                const message = `*New Contact Form Inquiry*
 
-*Name:* ${name}
-*Phone:* ${phone}
-*Subject:* ${subject}
+                const payload = { name, phone, email: '', subject, message: messageBody };
 
---- Message ---
-${messageBody}
-                `;
-
-                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
+                try {
+                    // Detect backend URL
+                    let backendURL = 'http://127.0.0.1:4000/api/contact';
+                    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                        backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/contact';
+                    }
+                    
+                    console.log("Sending contact data:", payload);
+                    const res = await fetch(backendURL, {
+                        method: 'POST', 
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }, 
+                        body: JSON.stringify(payload),
+                        mode: 'cors',
+                        credentials: 'omit'
+                    });
+                    console.log("Response status:", res.status);
+                    const data = await res.json();
+                    console.log("Response data:", data);
+                    if (res.ok && data.ok) {
+                        alert('✅ Your message has been saved. We will contact you soon!');
+                        contactForm.reset();
+                    } else {
+                        throw new Error(data.error || `HTTP ${res.status}: ${res.statusText}`);
+                    }
+                } catch (err) {
+                    console.error('Contact submit error:', err);
+                    console.error('Error details:', err.message);
+                    alert(`❌ Error saving message: ${err.message}`);
+                }
             });
         }
     });

@@ -1,0 +1,5 @@
+- [ ] Remove conflicting event listener in mechanic.html
+- [ ] Fix form submit listener in index.html
+- [ ] Add /api/bookings route in server.js
+- [ ] Add static file serving in server.js
+- [ ] Start the server
