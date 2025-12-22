@@ -1,0 +1,414 @@
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const path = require('path');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
+
+const app = express();
+const PORT = process.env.PORT || 4000;
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_change_in_production';
+
+app.use(cors());
+app.use(express.json());
+
+// Serve static frontend from parent folder
+app.use(express.static(path.join(__dirname, '..')));
+
+// MongoDB Connection
+
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mechway';
+
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ MongoDB Connected to:', MONGO_URI))
+  .catch(err => {
+    console.error('❌ MongoDB Connection Error:', err.message);
+    process.exit(1);
+  });
+
+// ======================= MONGOOSE SCHEMAS =======================
+
+// Contact Schema
+const ContactSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  phone: { type: String, required: true },
+  email: { type: String, default: '' },
+  subject: { type: String, default: '' },
+  message: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+// Booking Schema
+const BookingSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  phone: { type: String, required: true },
+  vehicleType: { type: String, required: true },
+  vehicleBrand: { type: String, default: '' },
+  vehicleModel: { type: String, default: '' },
+  problem: { type: String, default: '' },
+  message: { type: String, required: true },
+  latitude: { type: String, default: '' },
+  longitude: { type: String, default: '' },
+  createdAt: { type: Date, default: Date.now }
+});
+
+// Inquiry Schema
+const InquirySchema = new mongoose.Schema({
+  product_id: { type: String, default: '' },
+  product_name: { type: String, required: true },
+  name: { type: String, required: true },
+  phone: { type: String, required: true },
+  message: { type: String, default: '' },
+  createdAt: { type: Date, default: Date.now }
+});
+
+// User Schema (for authentication)
+const UserSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  phone: { type: String, unique: true, sparse: true },
+  email: { type: String, unique: true, sparse: true },
+  address: { type: String, required: true },
+  aadharNo: { type: String, required: true, unique: true },
+  mechanicType: { type: String, enum: ['car', 'bike'], default: '' },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+// Payment Schema
+const PaymentSchema = new mongoose.Schema({
+  customerName: { type: String, required: true },
+  customerPhone: { type: String, required: true },
+  vehicleType: { type: String, required: true },
+  vehicleBrand: { type: String, default: '' },
+  vehicleModel: { type: String, default: '' },
+  service: { type: String, required: true },
+  servicePrice: { type: Number, required: true },
+  platformFee: { type: Number, required: true },
+  totalAmount: { type: Number, required: true },
+  paymentMethod: { type: String, enum: ['cash', 'online'], required: true },
+  originalMessage: { type: String, default: '' },
+  status: { type: String, enum: ['pending', 'completed', 'failed'], default: 'completed' },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const Contact = mongoose.model('Contact', ContactSchema);
+const Booking = mongoose.model('Booking', BookingSchema);
+const Inquiry = mongoose.model('Inquiry', InquirySchema);
+const User = mongoose.model('User', UserSchema);
+const Payment = mongoose.model('Payment', PaymentSchema);
+
+// ======================= MIDDLEWARE =======================
+
+// Admin Key Validation
+function requireAdmin(req, res, next) {
+  const key = req.headers['x-admin-key'] || req.query.admin_key;
+  if (!process.env.ADMIN_KEY) return res.status(500).json({ error: 'Admin key not configured on server.' });
+  if (!key || key !== process.env.ADMIN_KEY) return res.status(401).json({ error: 'Unauthorized' });
+  next();
+}
+
+// ======================= API ROUTES =======================
+
+// POST /api/contact
+app.post('/api/contact', async (req, res) => {
+  const { name, phone, email, subject, message } = req.body || {};
+  console.log("📝 POST /api/contact received:", { name, phone, subject, message });
+  
+  if (!name || !phone || !message) {
+    console.warn("❌ Validation failed - missing required fields");
+    return res.status(400).json({ error: 'name, phone and message are required' });
+  }
+
+  try {
+    const entry = new Contact({ name, phone, email: email || '', subject: subject || '', message });
+    console.log("💾 Saving contact...", entry);
+    await entry.save();
+    console.log("✅ Contact saved successfully with ID:", entry._id);
+    return res.json({ ok: true, id: entry._id });
+  } catch (err) {
+    console.error('❌ contact save error', err);
+    return res.status(500).json({ error: 'Could not save contact' });
+  }
+});
+
+// POST /api/book
+app.post('/api/book', async (req, res) => {
+  const { name, phone, vehicleType, vehicleBrand, vehicleModel, problem, message, latitude, longitude } = req.body || {};
+  console.log("📝 POST /api/book received:", { name, phone, vehicleType, message });
+  
+  if (!name || !phone || !vehicleType || !message) {
+    console.warn("❌ Validation failed - missing required fields");
+    return res.status(400).json({ error: 'name, phone, vehicleType & message are required' });
+  }
+
+  try {
+    const entry = new Booking({
+      name, phone, vehicleType,
+      vehicleBrand: vehicleBrand || '',
+      vehicleModel: vehicleModel || '',
+      problem: problem || '',
+      message,
+      latitude: latitude || '',
+      longitude: longitude || ''
+    });
+    console.log("💾 Saving booking...", entry);
+    await entry.save();
+    console.log("✅ Booking saved successfully with ID:", entry._id);
+    return res.json({ ok: true, id: entry._id });
+  } catch (err) {
+    console.error('❌ booking save error', err);
+    return res.status(500).json({ error: 'Could not save booking' });
+  }
+});
+
+// POST /api/inquiry
+app.post('/api/inquiry', async (req, res) => {
+  const { product_id, product_name, name, phone, message } = req.body || {};
+  console.log("📝 POST /api/inquiry received:", { product_name, name, phone });
+  
+  if (!name || !phone || !product_name) {
+    console.warn("❌ Validation failed - missing required fields");
+    return res.status(400).json({ error: 'name, phone and product_name are required' });
+  }
+
+  try {
+    const entry = new Inquiry({
+      product_id: product_id || '',
+      product_name, name, phone,
+      message: message || ''
+    });
+    console.log("💾 Saving inquiry...", entry);
+    await entry.save();
+    console.log("✅ Inquiry saved successfully with ID:", entry._id);
+    res.json({ ok: true, id: entry._id });
+  } catch (err) {
+    console.error('❌ inquiry save error', err);
+    res.status(500).json({ error: 'Could not save inquiry' });
+  }
+});
+
+// POST /api/payment
+app.post('/api/payment', async (req, res) => {
+  const { customerName, customerPhone, vehicleType, vehicleBrand, vehicleModel, service, servicePrice, platformFee, totalAmount, paymentMethod, originalMessage } = req.body || {};
+  console.log("📝 POST /api/payment received:", { customerName, customerPhone, service, totalAmount });
+  
+  if (!customerName || !customerPhone || !vehicleType || !service || !servicePrice || !platformFee || !totalAmount || !paymentMethod) {
+    console.warn("❌ Validation failed - missing required fields");
+    return res.status(400).json({ error: 'customerName, customerPhone, vehicleType, service, servicePrice, platformFee, totalAmount, and paymentMethod are required' });
+  }
+
+  try {
+    const entry = new Payment({
+      customerName, 
+      customerPhone, 
+      vehicleType,
+      vehicleBrand: vehicleBrand || '',
+      vehicleModel: vehicleModel || '',
+      service,
+      servicePrice: Number(servicePrice),
+      platformFee: Number(platformFee),
+      totalAmount: Number(totalAmount),
+      paymentMethod,
+      originalMessage: originalMessage || ''
+    });
+    console.log("💾 Saving payment...", entry);
+    await entry.save();
+    console.log("✅ Payment saved successfully with ID:", entry._id);
+    return res.json({ ok: true, id: entry._id });
+  } catch (err) {
+    console.error('❌ payment save error', err);
+    return res.status(500).json({ error: 'Could not save payment' });
+  }
+});
+
+// GET /api/admin/submissions
+app.get('/api/admin/submissions', requireAdmin, async (req, res) => {
+  try {
+    const contacts = await Contact.find({});
+    const bookings = await Booking.find({});
+    const inquiries = await Inquiry.find({});
+    const payments = await Payment.find({});
+    res.json({ contacts, bookings, inquiries, payments });
+  } catch (err) {
+    console.error('admin fetch error', err);
+    res.status(500).json({ error: 'Could not fetch submissions' });
+  }
+});
+
+// POST /api/signup
+app.post('/api/signup', async (req, res) => {
+  const { name, phone, email, address, aadharNo, password, mechanicType } = req.body || {};
+  console.log("📝 POST /api/signup received:", { name, phone, email, address, aadharNo, mechanicType });
+
+  if (!name || !password || (!phone && !email) || !address || !aadharNo || !mechanicType) {
+    console.warn("❌ Validation failed - missing required fields");
+    return res.status(400).json({ error: 'name, password, address, aadharNo, mechanicType and either phone or email are required' });
+  }
+
+  try {
+    // Check if user already exists
+    const existingUser = await User.findOne({
+      $or: [
+        { phone: phone || undefined },
+        { email: email || undefined },
+        { aadharNo }
+      ]
+    });
+
+    if (existingUser) {
+      console.warn("❌ User already exists with this phone, email, or aadharNo");
+      return res.status(409).json({ error: 'User with this phone, email, or Aadhar number already exists' });
+    }
+
+    // Hash password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Create new user
+    const newUser = new User({
+      name,
+      phone: phone || '',
+      email: email || '',
+      address,
+      aadharNo,
+      mechanicType: mechanicType || '',
+      password: hashedPassword
+    });
+
+    console.log("💾 Saving new user...");
+    await newUser.save();
+    console.log("✅ User created successfully with ID:", newUser._id);
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: newUser._id, email: newUser.email, phone: newUser.phone, address: newUser.address, aadharNo: newUser.aadharNo, mechanicType: newUser.mechanicType },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.json({
+      ok: true,
+      message: 'Account created successfully',
+      token,
+      user: { id: newUser._id, name: newUser.name, email: newUser.email, phone: newUser.phone, address: newUser.address, aadharNo: newUser.aadharNo, mechanicType: newUser.mechanicType }
+    });
+  } catch (err) {
+    console.error('❌ signup error', err);
+    return res.status(500).json({ error: 'Could not create account' });
+  }
+});
+
+// POST /api/login
+app.post('/api/login', async (req, res) => {
+  const { identifier, password } = req.body || {};
+  console.log("📝 POST /api/login received with identifier:", identifier);
+  
+  if (!identifier || !password) {
+    console.warn("❌ Validation failed - missing email/phone or password");
+    return res.status(400).json({ error: 'email/phone and password are required' });
+  }
+
+  try {
+    // Find user by email or phone
+    const user = await User.findOne({
+      $or: [
+        { email: identifier },
+        { phone: identifier }
+      ]
+    });
+
+    if (!user) {
+      console.warn("❌ User not found with identifier:", identifier);
+      return res.status(401).json({ error: 'Invalid email/phone or password' });
+    }
+
+    // Compare password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      console.warn("❌ Password mismatch for user:", identifier);
+      return res.status(401).json({ error: 'Invalid email/phone or password' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, phone: user.phone, mechanicType: user.mechanicType },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    console.log("✅ Login successful for user:", user._id);
+    return res.json({ 
+      ok: true, 
+      message: 'Logged in successfully',
+      token,
+      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, mechanicType: user.mechanicType }
+    });
+  } catch (err) {
+    console.error('❌ login error', err);
+    return res.status(500).json({ error: 'Could not process login' });
+  }
+});
+
+// GET /admin
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// GET /api/health
+app.get('/api/health', (req, res) => res.json({ ok: true, timestamp: Date.now() }));
+
+// ======================= PAYMENT (Razorpay) =======================
+// POST /api/create-order
+app.post('/api/create-order', async (req, res) => {
+  const { amount, receipt } = req.body || {};
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    console.error('❌ Razorpay keys not configured');
+    return res.status(500).json({ error: 'Payment gateway not configured on server.' });
+  }
+  if (!amount || isNaN(Number(amount))) return res.status(400).json({ error: 'Invalid amount' });
+
+  const instance = new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_KEY_SECRET });
+  const amountPaise = Math.round(Number(amount) * 100); // Convert INR to paise
+  const options = {
+    amount: amountPaise,
+    currency: 'INR',
+    receipt: receipt || `rcpt_${Date.now()}`,
+    payment_capture: 1
+  };
+
+  try {
+    const order = await instance.orders.create(options);
+    console.log('✅ Razorpay order created:', order && order.id);
+    return res.json({ ok: true, order, key: process.env.RAZORPAY_KEY_ID });
+  } catch (err) {
+    console.error('❌ razorpay create order error', err);
+    return res.status(500).json({ error: 'Could not create payment order' });
+  }
+});
+
+// POST /api/payment/verify
+app.post('/api/payment/verify', (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body || {};
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) return res.status(400).json({ error: 'Missing payment verification parameters' });
+  if (!process.env.RAZORPAY_KEY_SECRET) return res.status(500).json({ error: 'Payment gateway secret not configured' });
+
+  const expected = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET).update(razorpay_order_id + '|' + razorpay_payment_id).digest('hex');
+  if (expected === razorpay_signature) {
+    console.log('✅ Payment signature verified for order:', razorpay_order_id);
+    return res.json({ ok: true });
+  } else {
+    console.warn('❌ Payment signature mismatch', { razorpay_order_id, razorpay_payment_id, razorpay_signature, expected });
+    return res.status(400).json({ ok: false, error: 'Invalid signature' });
+  }
+});
+
+// ======================= START SERVER =======================
+
+
+app.listen(PORT, () => {
+  console.log(`\n🚀 MechWay backend running at http://localhost:${PORT}`);
+  console.log(`📊 Admin panel: http://localhost:${PORT}/admin\n`);
+});

@@ -1,0 +1,49 @@
+
+> mechway-backend@1.0.0 start
+> node server.js
+
+
+🚀 MechWay backend running at http://localhost:4000
+📊 Admin panel: http://localhost:4000/admin
+
+✅ MongoDB Connected to: mongodb+srv://rishabhmech:mechucer@cluster0.kdiixo5.mongodb.net/?appName=Cluster0
+📝 POST /api/book received: {
+  name: 'Database Fix Test',
+  phone: '9876543213',
+  vehicleType: 'Bike',
+  message: 'Brake pads worn out, need replacement'
+}
+💾 Saving booking... {
+  name: 'Database Fix Test',
+  phone: '9876543213',
+  vehicleType: 'Bike',
+  vehicleBrand: 'Yamaha',
+  vehicleModel: 'FZ-S 2018',
+  problem: 'Brake Problem',
+  message: 'Brake pads worn out, need replacement',
+  latitude: '',
+  longitude: '',
+  _id: new ObjectId('6942d6f272f33e86a4778a9e'),
+  createdAt: 2025-12-17T16:14:42.338Z
+}
+✅ Booking saved successfully with ID: new ObjectId('6942d6f272f33e86a4778a9e')
+📝 POST /api/book received: {
+  name: 'jhgf',
+  phone: '765413685',
+  vehicleType: 'Car',
+  message: 'hgf'
+}
+💾 Saving booking... {
+  name: 'jhgf',
+  phone: '765413685',
+  vehicleType: 'Car',
+  vehicleBrand: 'MG',
+  vehicleModel: 'hecc',
+  problem: 'Other',
+  message: 'hgf',
+  latitude: '',
+  longitude: '',
+  _id: new ObjectId('6942d76c72f33e86a4778aa6'),
+  createdAt: 2025-12-17T16:16:44.291Z
+}
+✅ Booking saved successfully with ID: new ObjectId('6942d76c72f33e86a4778aa6')
