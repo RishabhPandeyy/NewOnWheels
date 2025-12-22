@@ -1,50 +1,45 @@
-# MongoDB Backend Fix - Implementation Plan
+# Service Booking to Payment Redirect Plan
 
-## Information Gathered
-- Server.js is properly configured for MongoDB with Mongoose
-- MongoDB Atlas connection string: mongodb+srv://rishabhmech:mechucer@cluster0.kdiixo5.mongodb.net/?appName=Cluster0
-- Conflicting db.js file uses lowdb (JSON file database) instead of MongoDB
-- Server is not currently running
-- All necessary MongoDB dependencies are installed (mongoose, mongodb)
+## Information Gathered:
+- **Current mechanic.html**: Collects user details (name, phone), vehicle details, and service requirements
+- **Current payment.html**: Has manual input fields for mechanic to fill out service details and pricing
+- **Task Requirements**: Redirect user from mechanic.html to payment.html after booking completion, pre-fill service details, remove mechanic name field
 
-## Plan: Remove Conflicting Database Layer & Fix MongoDB Integration
+## Current File Analysis:
+1. **mechanic.html**: Form submission sends data to `http://127.0.0.1:4000/api/book` 
+2. **payment.html**: Has fields for mechanic name, vehicle type, service performed, and manual price entry
+3. **Missing**: Service-to-price mapping, URL parameter handling, redirect logic
 
-### Step 1: Remove Conflicting Database Layer
-- Remove or rename `server/db.js` (old lowdb implementation)
-- Ensure server.js exclusively uses Mongoose/MongoDB models
+## Implementation Plan:
 
-### Step 2: Verify MongoDB Configuration
-- Check MongoDB connection string in environment
-- Ensure proper error handling for database connections
+### Step 1: Update mechanic.html
+- Modify the successful submission handler to redirect to payment.html
+- Pass service details as URL parameters (vehicle type, problem/service, brand, model)
+- Keep user contact details for payment reference
 
-### Step 3: Restart Server with MongoDB
-- Start the Node.js server
-- Verify MongoDB connection in console logs
-- Test health endpoint to confirm server is running
+### Step 2: Transform payment.html for Customer Use
+- **Remove**: Mechanic name field (not needed for customer payment)
+- **Pre-fill**: Service details from URL parameters
+- **Add**: Customer details section (read-only from URL params)
+- **Create**: Service-to-price mapping based on selected service
+- **Update**: Payment form title and labels for customer perspective
 
-### Step 4: Test Data Storage to MongoDB
-- Test POST /api/contact endpoint
-- Test POST /api/book endpoint
-- Test POST /api/inquiry endpoint
-- Verify data is actually saved to MongoDB collections
+### Step 3: Create Service Pricing Logic
+- Map common services to approximate price ranges
+- Auto-calculate prices based on service type and vehicle
+- Allow manual adjustment for specific cases
 
-### Step 5: Migrate Existing Data (if needed)
-- Run migration script if legacy JSON data exists in mechway.json
-- Ensure all existing data is properly migrated to MongoDB
+### Step 4: Update Form Submission
+- Handle customer payment confirmation
+- Send service completion data to backend
+- Show success message to customer
 
-## Dependent Files to be Edited
-- `server/db.js` - Remove conflicting lowdb implementation
-- `server/server.js` - Ensure clean MongoDB-only implementation
-- Potentially `.env` - If MongoDB URI needs updating
+## Dependent Files to be Edited:
+1. `/Users/techierisy/OnWheel/mechanic.html` - Update submission handler
+2. `/Users/techierisy/OnWheel/payment.html` - Complete transformation for customer use
 
-## Followup Steps After Editing
-1. Start server: `cd server && npm start`
-2. Test endpoints with curl or frontend forms
-3. Verify data in MongoDB Atlas dashboard
-4. Check admin panel for data visibility
-
-## Expected Outcome
-- Clean MongoDB-only backend
-- Data properly stored in MongoDB collections
-- Working admin panel displaying MongoDB data
-- No more data storage issues
+## Expected Outcome:
+- Seamless flow from booking to payment
+- Pre-filled service details reduce customer input
+- Service-based pricing eliminates manual price entry
+- Customer-focused payment interface

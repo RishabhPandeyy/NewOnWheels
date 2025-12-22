@@ -132,8 +132,8 @@
       }
 
       try {
-        const res = await fetch('http://127.0.0.1:4000/api/login', {
-          method:'POST', 
+        const res = await fetch('https://new-on-wheels.vercel.app/api/login', {
+          method:'POST',
           headers:{'Content-Type':'application/json'}, 
           body: JSON.stringify({identifier, password})
         });
@@ -176,7 +176,7 @@
       }
 
       try {
-        const res = await fetch('http://127.0.0.1:4000/api/signup', {
+        const res = await fetch('https://new-on-wheels.vercel.app/api/signup', {
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({name, phone, email, password})

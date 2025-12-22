@@ -8,9 +8,9 @@
   <!-- ============== PRIMARY SEO META TAGS ============== -->
   <!-- ================================================== -->
 
-  <title>Contact Us - MechWay 24/7 Mobile Mechanic & Ride Service</title>
+  <title>Contact MechWay - Instant Help | No Signup Required | 24/7 Mobile Mechanic</title>
 
-  <meta name="description" content="Get in touch with MechWay in Prayagraj. Call us for immediate assistance, send an email, or use our contact form for inquiries. We're here to help 24/7.">
+  <meta name="description" content="Get in touch with MechWay in Prayagraj. NO ACCOUNT NEEDED - Call for immediate assistance, use our instant contact form. We're here to help 24/7 with no signup required!">
 
   <meta name="keywords" content="contact mechway, prayagraj mechanic contact, mobile mechanic phone number, mechway support">
 
@@ -214,7 +214,7 @@
                     <div>
                         <h4>General Inquiries</h4>
 
-                        <p><a href="mailto:support@mechwaymechanic.com">support@mechwaymechanic.com</a></p>
+                        <p><a href="mailto:support@mechwaymechanic.com">rishabhh2004@gmail.com</a></p>
                     </div>
                 </div>
 
@@ -315,10 +315,7 @@
 
                 try {
                     // Detect backend URL
-                    let backendURL = 'http://127.0.0.1:4000/api/contact';
-                    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                        backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/contact';
-                    }
+                    const backendURL = 'https://new-on-wheels.vercel.app/api/contact';
                     
                     console.log("Sending contact data:", payload);
                     const res = await fetch(backendURL, {

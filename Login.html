@@ -353,12 +353,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             try {
-                // Detect backend URL: if on localhost/Live Server, use 127.0.0.1:4000; else construct from current origin
-                let backendURL = 'http://127.0.0.1:4000/api/login';
-                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                    // On a mobile or remote device, try to connect to backend on same host (modify port if needed)
-                    backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/login';
-                }
+                // Backend URL
+                const backendURL = 'https://new-on-wheels.vercel.app/api/login';
                 
                 const res = await fetch(backendURL, {
                     method: 'POST',

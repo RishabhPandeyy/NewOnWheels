@@ -174,17 +174,67 @@ border-radius: 8px; text-align: left; border: 1px solid #1d2d44;
 .payment-options { margin-top: 2rem; text-align: left; }
 .payment-option { background-color: var(--dark-navy); border: 1px solid #1d2d44; border-radius: 8px; padding: 1.2rem; margin-bottom: 1rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 1rem; }
 .payment-option:hover { border-color: var(--primary-color); }
-.payment-option.selected { border-color: var(--primary-color); box-shadow: 0 0 10px var(--primary-glow); }
+.payment-option.selected { border-color: var(--primary-color); box-shadow: 0 0 10px var(--primary-glow); background-color: rgba(0, 163, 255, 0.05); }
 .payment-option input[type="radio"] { display: none; }
 .payment-option .icon { font-size: 1.5rem; color: var(--primary-color); }
 .payment-option .details h4 { color: var(--white); font-weight: 600; }
 .payment-option .details p { font-size: 0.9rem; color: var(--slate); }
 .disabled { opacity: 0.5; cursor: not-allowed; }
 .disabled:hover { border-color: #1d2d44; }
+#cash-option { cursor: pointer; }
+#cash-option:hover { border-color: var(--primary-color); }
+#cash-option.selected { border-color: var(--primary-color); box-shadow: 0 0 10px var(--primary-glow); background-color: rgba(0, 163, 255, 0.05); }
 
 .form-button { width: 100%; padding: 0.9rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: var(--transition); cursor: pointer; background-color: var(--primary-color); color: var(--dark-navy); border: none; margin-top: 1rem; }
 .form-button:hover { transform: translateY(-3px); box-shadow: 0 0 25px var(--primary-glow); }
 .form-button:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+/* QR Code Section Styling */
+.qr-code-section {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--dark-navy);
+    border: 1px solid #1d2d44;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.qr-code-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.qr-code-image {
+    width: 150px;
+    height: 150px;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 163, 255, 0.2);
+}
+
+.qr-code-text {
+    color: var(--white);
+}
+
+.qr-code-text p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.qr-code-text p strong {
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.qr-instruction {
+    color: var(--slate);
+    font-size: 0.8rem;
+    font-style: italic;
+}
 
 /* Utility class for hiding elements */
 .hidden { display: none; }
@@ -319,11 +369,11 @@ border-radius: 8px; text-align: left; border: 1px solid #1d2d44;
                 <input type="text" id="other-service-details" name="other-service-details" class="form-input" placeholder="e.g., Headlight bulb change">
             </div>
 
-            <!-- Pricing (Auto-calculated) -->
+            <!-- Pricing (Auto-calculated and Read-only for Security) -->
             <div class="form-group">
-                <label for="service-price">Service Price (INR)</label>
+                <label for="service-price">Service Price (INR) <i class="fas fa-lock" style="color: #00A3FF; margin-left: 0.5rem;"></i></label>
                 <i class="fas fa-rupee-sign input-icon"></i>
-                <input type="number" id="service-price" name="service-price" class="form-input" required placeholder="Auto-calculated based on service">
+                <input type="text" id="service-price" name="service-price" class="form-input" required readonly data-calculated="true" placeholder="Auto-calculated based on service">
             </div>
             
             <div class="price-breakdown">
@@ -346,8 +396,19 @@ border-radius: 8px; text-align: left; border: 1px solid #1d2d44;
                     <input type="radio" name="payment-method" value="online" disabled>
                     <div class="icon"><i class="fas fa-credit-card"></i></div>
                     <div class="details">
-                        <h4>Pay Online (UPI, Cards)</h4>
-                        <p>Click to activate and integrate Razorpay.</p>
+                        <h4>Pay Online (UPI, QR Code)</h4>
+                        <p>Scan QR code to pay instantly via UPI.</p>
+                    </div>
+                    <!-- QR Code Section -->
+                    <div class="qr-code-section hidden" id="qr-code-section">
+                        <div class="qr-code-container">
+                            <img src="QRCode.jpeg" alt="QR Code Placeholder" class="qr-code-image" id="qr-code-image">
+                            <div class="qr-code-text">
+                                <p><strong>Scan to Pay</strong></p>
+                                <p>Amount: <span id="qr-amount">₹0.00</span></p>
+                                <p class="qr-instruction">Open any UPI app and scan this code</p>
+                            </div>
+                        </div>
                     </div>
                 </label>
             </div>
@@ -500,6 +561,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Calculate initial price
     calculatePrice();
+    
+    // Enable online payment option after initial price calculation
+    setTimeout(() => {
+        enableOnlinePayment();
+        // Set cash as default selection
+        document.getElementById('cash-option').classList.add('selected');
+    }, 100);
 
     // --- Logic for "Other" Service Text Field ---
     servicePerformedSelect.addEventListener('change', (e) => {
@@ -515,6 +583,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update price when "other" service details change
     document.getElementById('other-service-details').addEventListener('input', calculatePrice);
+
+    // --- Payment Method Selection & QR Code Logic ---
+    const onlinePaymentBtn = document.getElementById('online-option');
+    const cashPaymentBtn = document.getElementById('cash-option');
+    const qrCodeSection = document.getElementById('qr-code-section');
+    const qrAmount = document.getElementById('qr-amount');
+    
+    // Enable online payment when price is calculated
+    function enableOnlinePayment() {
+        const pricing = calculatePrice();
+        if (pricing.basePrice > 0) {
+            onlinePaymentBtn.classList.remove('disabled');
+            onlinePaymentBtn.querySelector('input[type="radio"]').disabled = false;
+        }
+    }
+    
+    // Payment method selection handler
+    function handlePaymentMethodChange() {
+        const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+        
+        if (selectedPaymentMethod === 'online') {
+            // Show QR code for online payment
+            qrCodeSection.classList.remove('hidden');
+            // Update QR code amount
+            const pricing = calculatePrice();
+            qrAmount.textContent = `₹${pricing.totalAmount.toFixed(2)}`;
+            // Update online option visual state
+            onlinePaymentBtn.classList.add('selected');
+            cashPaymentBtn.classList.remove('selected');
+        } else {
+            // Hide QR code for cash payment
+            qrCodeSection.classList.add('hidden');
+            cashPaymentBtn.classList.add('selected');
+            onlinePaymentBtn.classList.remove('selected');
+        }
+    }
+    
+    // Add event listeners for payment method selection
+    const paymentMethodRadios = document.querySelectorAll('input[name="payment-method"]');
+    paymentMethodRadios.forEach(radio => {
+        radio.addEventListener('change', handlePaymentMethodChange);
+    });
+    
+    // Click handlers for payment option labels
+    cashPaymentBtn.addEventListener('click', (e) => {
+        if (!cashPaymentBtn.classList.contains('disabled')) {
+            cashPaymentBtn.querySelector('input[type="radio"]').checked = true;
+            handlePaymentMethodChange();
+        }
+    });
+    
+    onlinePaymentBtn.addEventListener('click', (e) => {
+        if (!onlinePaymentBtn.classList.contains('disabled')) {
+            onlinePaymentBtn.querySelector('input[type="radio"]').checked = true;
+            handlePaymentMethodChange();
+        }
+    });
+    
+
 
     // --- Payment Form Submission Handler with Database Integration ---
     if (paymentForm) {

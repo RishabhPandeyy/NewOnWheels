@@ -8,9 +8,9 @@
   <!-- ============== PRIMARY SEO META TAGS ============== -->
   <!-- ================================================== -->
 
-  <title>Book a Mechanic - 24/7 Mobile Service | MechWay</title>
+  <title>Book Mechanic Instantly - No Signup Required | 24/7 Mobile Service | MechWay</title>
 
-  <meta name="description" content="Schedule a mobile mechanic in Prayagraj. Fill out our simple form to book car or bike repair, battery replacement, tire service, and more. Fast, easy, and convenient.">
+  <meta name="description" content="Schedule a mobile mechanic in Prayagraj instantly! NO ACCOUNT NEEDED - Fill our simple form for car/bike repair, battery replacement, tire service. Fast, easy booking in 30 minutes!">
 
   <meta name="keywords" content="book a mechanic, schedule car repair, mobile mechanic booking, prayagraj auto service, mechway mechanic booking">
 
@@ -73,7 +73,7 @@
     .page-header {
         padding-top: 12rem; /* Extra padding to account for fixed navbar */
         padding-bottom: 4rem;
-        background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 1)), url('service.jpg') no-repeat center center/cover;
+        background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 1)), url('mechanic1.jpg') no-repeat center center/cover;
         text-align: center;
     }
     .page-header h1 {
@@ -205,14 +205,17 @@
 
     <!-- ======================= PAGE HEADER ======================= -->
     <section class="page-header">
-        <h1>Book a Mechanic</h1>
-        <p>Fill in your details below and we'll dispatch an expert to your location.</p>
+        <h1>Book a Mechanic Instantly</h1>
+        <p><strong>NO SIGNUP REQUIRED</strong> - Fill in your details below and we'll dispatch an expert to your location in 30 minutes.</p>
     </section>
 
     <!-- ======================= BOOKING FORM SECTION ======================= -->
     <section id="contact">
         <div class="container">
             <div class="contact-form-container">
+                <div style="background: linear-gradient(45deg, #00A3FF, #0096FF); color: white; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; font-weight: 600;">
+                    <i class="fas fa-check-circle"></i> NO SIGNUP REQUIRED - Book Instantly & Get Service in 30 Minutes!
+                </div>
                 <form id="contact-form" novalidate>
                     <!-- Personal Details -->
                     <label for="name">Your Name</label>
@@ -396,10 +399,7 @@
                     console.log("⏳ Sending request...");
 
                     // Construct backend URL
-                    let backendURL = 'http://127.0.0.1:4000/api/book';
-                    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                        backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/book';
-                    }
+                    const backendURL = 'https://new-on-wheels.vercel.app/api/book';
                     console.log("🌐 Backend URL:", backendURL);
 
                     // Send request
@@ -414,9 +414,21 @@
                     console.log("📊 Response data:", result);
 
                     if (response.ok && result.ok) {
-                        alert('✅ SUCCESS!\n\nYour service request has been saved!\n\nWe will contact you at: ' + cleanPhone + '\n\nThank you!');
-                        document.getElementById('contact-form').reset();
-                        console.log("✅ Success!");
+                        console.log("✅ Success! Redirecting to payment...");
+                        
+                        // Construct URL parameters for payment page
+                        const params = new URLSearchParams({
+                            name: name,
+                            phone: cleanPhone,
+                            vehicleType: vehicleType,
+                            vehicleBrand: vehicleBrand,
+                            vehicleModel: vehicleModel,
+                            service: problem,
+                            message: message
+                        });
+                        
+                        // Redirect to payment page with service details
+                        window.location.href = `payment.html?${params.toString()}`;
                     } else {
                         throw new Error(result.error || 'Request failed');
                     }

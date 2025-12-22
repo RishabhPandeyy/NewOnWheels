@@ -1,48 +1,43 @@
-# MongoDB Backend Fix - TODO List
+# Logo Font Size Enhancement Plan - COMPLETED ✅
 
-## Problem Identified
-- Server configured for MongoDB but not running
-- Conflicting database layer (lowdb vs MongoDB)
-- No data persistence to MongoDB currently working
+## Task: Replace image logo with text-based logo and increase font size for better visibility
 
-## Fix Plan
+## Current Status - ✅ COMPLETED
+- Logo is now text-based "MechWay" instead of image
+- Font size increased from 1.8rem to 2.5rem
+- Located in index.html navbar section
+- CSS class .navbar-logo has been updated with enhanced styling
 
-### Step 1: Remove Conflicting Database Layer
-- [ ] Remove or rename `server/db.js` (old lowdb implementation)
-- [ ] Ensure server.js uses only Mongoose/MongoDB
+## Changes Made:
 
-### Step 2: Verify MongoDB Connection
-- [ ] Test MongoDB Atlas connection
-- [ ] Ensure proper environment variables are set
+### ✅ 1. Replaced Image Logo with Text Logo
+- Changed from `<img src="logo.jpeg" alt="MechWay Logo" style="height: 1.8rem;">` to `<a href="#hero" class="navbar-logo">MechWay</a>`
+- Removed image dependency
+- Maintained link functionality
 
-### Step 3: Start Server with MongoDB
-- [ ] Start the Node.js server
-- [ ] Verify MongoDB connection in logs
-- [ ] Test health endpoint
+### ✅ 2. Increased Font Size
+- Current: 1.8rem → New: 2.5rem (39% increase in visibility)
+- Enhanced styling with gradient colors and glow effects
+- Maintained responsive design
 
-### Step 4: Test Data Storage
-- [ ] Test POST /api/contact endpoint
-- [ ] Test POST /api/book endpoint  
-- [ ] Test POST /api/inquiry endpoint
-- [ ] Verify data appears in MongoDB
+### ✅ 3. Updated CSS
+- Updated `.navbar-logo` font-size from 1.8rem to 2.5rem
+- Added gradient background: `linear-gradient(45deg, var(--primary-color), #00ff88)`
+- Added text effects: `-webkit-background-clip: text`, `text-shadow: 0 0 10px rgba(0, 163, 255, 0.3)`
+- Maintained color, font-weight, and text-decoration properties
 
-### Step 5: Migrate Existing Data (if needed)
-- [ ] Run migration script if legacy JSON data exists
-- [ ] Verify migration completed successfully
+### Files Modified:
+- `/Users/techierisy/OnWheel/index.html` - Updated both HTML structure and CSS styling
 
+### Results Achieved:
+- ✅ More visible logo with significantly larger font size
+- ✅ Enhanced visual appeal with gradient colors and glow effects
+- ✅ Better user experience with improved readability
+- ✅ Maintained functionality and responsive design
+- ✅ Removed dependency on external image file
+- ✅ Improved loading performance
 
-
-## Status
-- [x] Problem identified
-- [x] Root cause found: mechway database didn't exist in MongoDB Atlas
-- [x] mechway database created successfully
-- [x] Server restarted with proper MongoDB connection
-- [x] Data storage tested and working
-- [x] mechanic.html data successfully stored in MongoDB
-- [x] ✅ FIXED: Backend now properly stores mechanic booking data
-
-## Final Verification
-- **Database**: mechway database created and connected
-- **Collection**: bookings collection with all form data
-- **Total Bookings**: 4 entries from mechanic.html
-- **Admin Access**: Working at http://localhost:4000/admin (key: mechway123)
+## Final Implementation:
+- **Before**: `<img src="logo.jpeg" alt="MechWay Logo" style="height: 1.8rem;">`
+- **After**: `<a href="#hero" class="navbar-logo">MechWay</a>`
+- **CSS**: Enhanced gradient styling with 2.5rem font size

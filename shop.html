@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Shop Products - MechWay Mechanic</title>
+  <title>Auto Parts & Products Shop - No Signup Required | MechWay</title>
 
   <!-- Font Awesome & Google Fonts (Same as index.html) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -157,14 +157,19 @@
         <section class="page-header">
             <div class="container">
                 <h1>Shop Essential Products</h1>
-                <p>Quality oils, fluids, and accessories for your vehicle.</p>
+                <p><strong>NO SIGNUP REQUIRED</strong> - Quality oils, fluids, and accessories for your vehicle. Instant inquiry & purchase.</p>
             </div>
         </section>
 
         <!-- ======================= SHOP SECTION ======================= -->
         <section id="shop">
             <div class="container">
-                <!-- Filter Controls -->
+        <!-- NO SIGNUP Banner -->
+                <div style="background: linear-gradient(45deg, #00A3FF, #0096FF); color: white; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; font-weight: 600;">
+                    <i class="fas fa-check-circle"></i> NO SIGNUP REQUIRED - Browse & Inquire Instantly!
+                </div>
+                
+        <!-- Filter Controls -->
                 <div class="filter-bar">
                     <button class="filter-btn active" data-filter="all">All Products</button>
                     <button class="filter-btn" data-filter="car">Car Essentials</button>
@@ -319,10 +324,7 @@
                 const payload = { product_name: productName, name, phone, message: '' };
                 try {
                     // Detect backend URL
-                    let backendURL = 'http://127.0.0.1:4000/api/inquiry';
-                    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                        backendURL = window.location.protocol + '//' + window.location.hostname + ':4000/api/inquiry';
-                    }
+                    const backendURL = 'https://new-on-wheels.vercel.app/api/inquiry';
                     
                     console.log("Sending inquiry data:", payload);
                     const res = await fetch(backendURL, { 
